@@ -7,15 +7,20 @@
     <link rel="stylesheet" href="/profile.css">
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
     <script>
-        async function fetchCommits() {
-            const response = await fetch('/commits');
+        async function fetchCommits(repoFullName) {
+            if (!repoFullName) return;
+
+            const response = await fetch(`/commits?repo=${repoFullName}`);
             if (response.ok) {
                 const commits = await response.json();
                 const commitSelect = document.getElementById('commitInfo');
-                
+
+                // Leeg de vorige commits
+                commitSelect.innerHTML = '<option value="">Selecteer een commit (optioneel)</option>';
+
                 commits.forEach(commit => {
                     const option = document.createElement('option');
-                    option.value = commit.commit.message;  // Je kunt ook meer commit-informatie opslaan
+                    option.value = commit.commit.message;
                     option.text = `${commit.commit.message} - ${commit.commit.author.name}`;
                     commitSelect.appendChild(option);
                 });
@@ -23,8 +28,6 @@
                 console.error('Er ging iets mis bij het ophalen van de commits');
             }
         }
-
-        window.onload = fetchCommits;
     </script>
 </head>
 <body>
@@ -45,6 +48,12 @@
     <div class="profile-info">
         <form action="/feed/new" method="POST">
             <textarea name="content" placeholder="Wat heb je gedaan vandaag met je project?" required></textarea>
+            <select name="repository" id="repository" onchange="fetchCommits(this.value)">
+                <option value="">Selecteer een repository (optioneel)</option>
+                <% repositories.forEach(function(repo) { %>
+                    <option value="<%= repo.full_name %>"><%= repo.name %></option>
+                <% }); %>
+            </select>
             <select name="commitInfo" id="commitInfo">
                 <option value="">Selecteer een commit (optioneel)</option>
             </select>

@@ -55,6 +55,18 @@ router.get('/github/callback', async (req, res) => {
       // Sla de gebruikerslogin op in de sessie
       req.session.userLogin = login;
 
+      const reposResponse = await axios.get('https://api.github.com/user/repos', {
+        headers: {
+            Authorization: `Bearer ${accessToken}`
+        }
+      });
+
+      req.session.repositories = reposResponse.data.map(repo => ({
+        name: repo.name,
+        owner: repo.owner.login,
+        full_name: repo.full_name
+      }));
+
       req.session.save((err) => { 
         if (err) { 
             console.error("Error bij het opslaan van de sessie:", err); 
