@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevPulse Feed</title>
+    <link rel="stylesheet" href="/profile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
+    <script>
+        async function fetchCommits() {
+            const response = await fetch('/commits');
+            if (response.ok) {
+                const commits = await response.json();
+                const commitSelect = document.getElementById('commitInfo');
+                
+                commits.forEach(commit => {
+                    const option = document.createElement('option');
+                    option.value = commit.commit.message;  // Je kunt ook meer commit-informatie opslaan
+                    option.text = `${commit.commit.message} - ${commit.commit.author.name}`;
+                    commitSelect.appendChild(option);
+                });
+            } else {
+                console.error('Er ging iets mis bij het ophalen van de commits');
+            }
+        }
+
+        window.onload = fetchCommits;
+    </script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar-profile">
+        <div class="nav-logo">
+            <img src="/icons/DevPulse-logo.svg" alt="DevPulse Logo" class="logo-image">
+            <h2>DevPulse</h2>
+        </div>
+        <ul class="nav-links-profile">
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/feed">Feed</a></li>
+            <li><a href="/logout">Log out</a></li>
+        </ul>
+    </nav>
+
+    <!-- Formulier om een nieuwe post te maken -->
+    <div class="profile-info">
+        <form action="/feed/new" method="POST">
+            <textarea name="content" placeholder="Wat heb je gedaan vandaag met je project?" required></textarea>
+            <select name="commitInfo" id="commitInfo">
+                <option value="">Selecteer een commit (optioneel)</option>
+            </select>
+            <input type="text" name="imageUrl" placeholder="URL van afbeelding (optioneel)">
+            <button type="submit">Post!</button>
+        </form>
+    </div>
+
+    <!-- Weergeven van posts -->
+    <div class="profile-info">
+        <% posts.forEach(function(post) { %>
+            <div class="post">
+                <h3>Gepost door: <%= post.author.login %></h3>
+                <p><%= post.content %></p>
+                <% if (post.commitInfo) { %>
+                    <p><strong>Commit Info:</strong> <%= post.commitInfo %></p>
+                <% } %>
+                <% if (post.imageUrl) { %>
+                    <img src="<%= post.imageUrl %>" alt="Afbeelding" style="max-width: 100%;">
+                <% } %>
+                <p><small>Gepost op: <%= post.createdAt.toDateString() %></small></p>
+            </div>
+        <% }); %>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <p>© 2024 DevPulse. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
