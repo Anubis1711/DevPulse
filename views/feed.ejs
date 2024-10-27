@@ -20,8 +20,8 @@
 
                 commits.forEach(commit => {
                     const option = document.createElement('option');
-                    option.value = commit.commit.message;
-                    option.text = `${commit.commit.message} - ${commit.commit.author.name}`;
+                    option.value = `${repoFullName},${commit.sha}`;
+                    option.text = `${commit.commit.message || "Geen bericht"} - ${commit.commit.author ? commit.commit.author.name : "Onbekende auteur"}`;
                     commitSelect.appendChild(option);
                 });
             } else {
@@ -69,7 +69,13 @@
                 <h3>Gepost door: <%= post.author.login %></h3>
                 <p><%= post.content %></p>
                 <% if (post.commitInfo) { %>
-                    <p><strong>Commit Info:</strong> <%= post.commitInfo %></p>
+                    <p><strong>Commit Info:</strong></p>
+                    <p>Bericht: <%= post.commitInfo.message || "Geen bericht beschikbaar" %></p>
+                    <p>Auteur: <%= post.commitInfo.author || "Onbekende auteur" %></p>
+                    <p>SHA: <%= post.commitInfo.sha || "Geen SHA beschikbaar" %></p>
+                    <% if (post.commitInfo.url) { %>
+                        <a href="<%= post.commitInfo.url %>" target="_blank">Bekijk commit op GitHub</a>
+                    <% } %>
                 <% } %>
                 <% if (post.imageUrl) { %>
                     <img src="<%= post.imageUrl %>" alt="Afbeelding" style="max-width: 100%;">
