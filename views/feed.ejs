@@ -85,6 +85,37 @@
         <% }); %>
     </div>
 
+    <% posts.forEach(function(post) { %>
+        <div class="post">
+          <h3><%= post.author.name %></h3>
+          <p><%= post.content %></p>
+          <form action="/feed/<%= post._id %>/like" method="POST">
+            <button type="submit" class="like-button">
+              Like (<%= post.likes ? post.likes.length : 0 %>)
+            </button>
+          </form>
+      
+          <!-- Comments sectie -->
+          <div class="comment-section">
+            <h4>Comments:</h4>
+            <% if (post.comments && post.comments.length > 0) { %>
+              <% post.comments.forEach(function(comment) { %>
+                <div class="comment">
+                  <p class="comment-author"><%= comment.author %>:</p>
+                  <p class="comment-content"><%= comment.content %></p>
+                </div>
+              <% }); %>
+            <% } %>
+            <form action="/feed/<%= post._id %>/comment" method="POST" class="comment-form">
+              <textarea name="content" placeholder="Schrijf een reactie..." required></textarea>
+              <button type="submit">Comment</button>
+            </form>
+          </div>
+        </div>
+    <% }); %>
+      
+      
+      
     <!-- Footer -->
     <footer>
         <div class="footer-container">

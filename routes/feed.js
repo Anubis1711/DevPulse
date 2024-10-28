@@ -8,10 +8,11 @@ const axios = require('axios');
 // GET route voor de feed
 router.get('/', isAuthenticated, async (req, res) => {
   try {
-    const posts = await Post.find().populate('author').sort({ createdAt: -1 });
-    
     // Haal repositories op uit de sessie
     const repositories = req.session.repositories || [];
+
+    // Haal alle posts op uit de database
+    const posts = await Post.find().populate('author').sort({ createdAt: -1 });
 
     // Render de feed met de beschikbare posts en repositories
     res.render('feed', { user: req.session.userLogin, posts, repositories });
@@ -75,5 +76,71 @@ router.post('/new', isAuthenticated, async (req, res) => {
     res.status(500).send("Er ging iets mis bij het aanmaken van een post.");
   }
 });
+
+// POST route om een post te liken
+router.post('/:postId/like', isAuthenticated, async (req, res) => {
+  const { postId } = req.params;
+
+  try {
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).send("Post niet gevonden");
+    }
+
+    // Haal de huidige gebruiker op aan de hand van de sessie userLogin
+    const user = await User.findOne({ login: req.session.userLogin });
+    if (!user) {
+      return res.status(404).send("Gebruiker niet gevonden");
+    }
+
+    // Controleer of de gebruiker al heeft geliked
+    if (post.likes.includes(user._id)) {
+      return res.status(400).send("Je hebt deze post al geliked");
+    }
+
+    // Voeg gebruiker toe aan lijst van likes
+    post.likes.push(user._id);
+    await post.save();
+
+    res.redirect('/feed');
+  } catch (error) {
+    console.error("Error bij het liken van de post:", error);
+    res.status(500).send("Er ging iets mis bij het liken van de post.");
+  }
+});
+
+// POST route om een comment toe te voegen aan een post
+router.post('/:postId/comment', isAuthenticated, async (req, res) => {
+  const { postId } = req.params;
+  const { content } = req.body;
+
+  try {
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).send("Post niet gevonden");
+    }
+
+    // Haal de huidige gebruiker op aan de hand van de sessie userLogin
+    const user = await User.findOne({ login: req.session.userLogin });
+    if (!user) {
+      return res.status(404).send("Gebruiker niet gevonden");
+    }
+
+    // Voeg de nieuwe comment toe aan de post
+    const newComment = {
+      author: user._id,
+      content,
+      createdAt: new Date()
+    };
+    post.comments.push(newComment);
+    await post.save();
+
+    res.redirect('/feed');
+  } catch (error) {
+    console.error("Error bij het toevoegen van een comment:", error);
+    res.status(500).send("Er ging iets mis bij het toevoegen van de comment.");
+  }
+});
+
 
 module.exports = router;
