@@ -235,3 +235,89 @@ footer {
     padding: 20px;
     text-align: center;
 }
+
+.like-button {
+    background-color: #ff6f61; /* Helderder kleur voor de like-knop */
+    color: #ffffff;
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.like-button:hover {
+    background-color: #d95a4a;
+    transform: translateY(-2px);
+}
+
+.like-count {
+    font-size: 1em;
+    color: #333;
+    margin-top: 5px;
+}
+
+.comment-section {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f4f4f4; /* Lichte achtergrond voor contrast */
+    border-radius: 10px;
+}
+
+.comment-section .comment {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.comment-author {
+    font-weight: bold;
+    color: #ff6f61; /* Helderder accentkleur voor de gebruikersnaam */
+}
+
+.comment-content {
+    margin-top: 5px;
+    color: #333;
+}
+
+.comment-form textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    resize: none;
+}
+
+.comment-form button {
+    background-color: #ff6f61;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-top: 10px;
+}
+
+.comment-form button:hover {
+    background-color: #d95a4a;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .like-button, .comment-form button {
+        width: 100%;
+        font-size: 0.9em;
+        padding: 8px 16px;
+    }
+
+    .comment-section {
+        padding: 5px;
+    }
+
+    .comment-form textarea {
+        height: 80px;
+    }
+}
