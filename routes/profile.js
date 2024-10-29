@@ -1,3 +1,4 @@
+// routes/profile.js
 const axios = require('axios');
 const moment = require('moment');
 const express = require('express');
@@ -17,7 +18,7 @@ router.get('/', isAuthenticated, async (req, res) => {
     }
 
     const accessToken = req.session.accessToken;
-    const lastWeek = moment().subtract(6, 'days');  // De startdatum voor een week geleden
+    const lastWeek = moment().subtract(6, 'days'); // De startdatum voor een week geleden
     const dailyCommits = Array(7).fill(0); // Array om dagelijkse commits bij te houden
 
     // Haal de repositories van de gebruiker op
