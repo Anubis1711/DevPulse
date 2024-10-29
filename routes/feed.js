@@ -22,60 +22,85 @@ router.get('/', isAuthenticated, async (req, res) => {
   }
 });
 
-// POST route om een nieuwe post te maken
 router.post('/new', isAuthenticated, async (req, res) => {
   const { content, imageUrl, commitInfo } = req.body;
 
   try {
-    const user = await User.findOne({ login: req.session.userLogin });
-    if (!user) {
-      return res.status(404).send("Gebruiker niet gevonden");
-    }
+      const user = await User.findOne({ login: req.session.userLogin });
+      if (!user) {
+          return res.status(404).send("Gebruiker niet gevonden");
+      }
 
-    let commitDetails = null;
-    if (commitInfo) {
-      const [repoFullName, commitSha] = commitInfo.split(',');
+      let commitDetails = null;
+      if (commitInfo) {
+          const [repoFullName, commitSha] = commitInfo.split(',');
 
-      // Haal de commit details op van de GitHub API
-      const accessToken = req.session.accessToken;
-      const url = `https://api.github.com/repos/${repoFullName}/commits/${commitSha}`;
+          const accessToken = req.session.accessToken;
+          if (!accessToken) {
+              console.error("No accessToken in session.");
+              return res.status(401).send("Authentication required");
+          }
 
-      const commitResponse = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
+          const url = `https://api.github.com/repos/${repoFullName}/commits/${commitSha}`;
+          try {
+              console.log("Fetching commit details:", { repoFullName, commitSha });
+
+              const commitResponse = await axios.get(url, {
+                  headers: { Authorization: `Bearer ${accessToken}` }
+              });
+              const commit = commitResponse.data;
+
+              let filesChanged = [];
+              if (Array.isArray(commit.files)) {
+                  filesChanged = commit.files.map(file => ({
+                      filename: file.filename,
+                      additions: file.additions,
+                      deletions: file.deletions,
+                      changes: file.changes,
+                      status: file.status
+                  }));
+              } else {
+                  console.warn("commit.files is not an array or undefined:", commit.files);
+              }
+
+              commitDetails = {
+                  message: commit.commit.message,
+                  author: commit.commit.author?.name || commit.commit.committer?.name || "Unknown",
+                  sha: commit.sha,
+                  url: commit.html_url,
+                  additions: commit.stats?.additions || 0,
+                  deletions: commit.stats?.deletions || 0,
+                  files: filesChanged
+              };
+          } catch (error) {
+              console.error("Error fetching commit details:", error.message);
+              if (error.response) {
+                  console.error("GitHub API error details:", error.response.data);
+              }
+              return res.status(500).send("Failed to fetch commit details.");
+          }
+      }
+
+      // Ensure commitDetails is always an object before saving
+      if (!commitDetails || typeof commitDetails !== 'object') {
+          commitDetails = {};  // Default to an empty object if not correctly set
+      }
+
+      const newPost = new Post({
+          author: user._id,
+          content,
+          imageUrl,
+          commitInfo: commitDetails  // Ensured to be an object
       });
 
-      // Log de response van GitHub om te zien of alle velden correct worden opgehaald
-      console.log("Commit Response Data:", commitResponse.data);
-
-      // Sla de relevante commit details op
-      const commit = commitResponse.data;
-      commitDetails = {
-        message: commit.commit.message,
-        author: commit.commit.author ? commit.commit.author.name : (commit.commit.committer ? commit.commit.committer.name : "Onbekend"),
-        sha: commit.sha,
-        url: commit.html_url
-      };
-
-      // Log de commit details die worden opgeslagen
-      console.log("Commit Details die worden opgeslagen:", commitDetails);
-    }
-
-    const newPost = new Post({
-      author: user._id,
-      content,
-      imageUrl,
-      commitInfo: commitDetails // Sla gedetailleerde informatie op
-    });
-
-    await newPost.save();
-    res.redirect('/feed');
+      await newPost.save();
+      res.redirect('/feed');
   } catch (error) {
-    console.error("Error bij het aanmaken van een post:", error);
-    res.status(500).send("Er ging iets mis bij het aanmaken van een post.");
+      console.error("Error creating post:", error);
+      res.status(500).send("Something went wrong while creating the post.");
   }
 });
+
 
 // POST route om een post te liken
 router.post('/:postId/like', isAuthenticated, async (req, res) => {
@@ -141,6 +166,7 @@ router.post('/:postId/comment', isAuthenticated, async (req, res) => {
     res.status(500).send("Er ging iets mis bij het toevoegen van de comment.");
   }
 });
+
 
 
 module.exports = router;
