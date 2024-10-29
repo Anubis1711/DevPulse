@@ -48,6 +48,17 @@
         </div>
     </div>
 
+    <div class="commit-week-overview">
+        <h3>Weekoverzicht van commits</h3>
+        <div class="hearts-container">
+            <% dailyCommits.forEach(commits => { %>
+                <div class="heart" style="transform: scale(<%= 1 + (commits * 0.1) %>);">
+                    ❤️ (<%= commits %>)
+                </div>
+            <% }); %>
+        </div>
+    </div>
+    
     <!-- Footer -->
     <footer>
         <div class="footer-container">
