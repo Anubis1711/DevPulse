@@ -69,53 +69,54 @@
                 <h3>Gepost door: <%= post.author.login %></h3>
                 <p><%= post.content %></p>
                 <% if (post.commitInfo) { %>
-                    <p><strong>Commit Info:</strong></p>
-                    <p>Bericht: <%= post.commitInfo.message || "Geen bericht beschikbaar" %></p>
-                    <p>Auteur: <%= post.commitInfo.author || "Onbekende auteur" %></p>
-                    <p>SHA: <%= post.commitInfo.sha || "Geen SHA beschikbaar" %></p>
-                    <% if (post.commitInfo.url) { %>
-                        <a href="<%= post.commitInfo.url %>" target="_blank">Bekijk commit op GitHub</a>
+                    <p><strong>Commit Message:</strong> <%= post.commitInfo.message %></p>
+                    <p><strong>Author:</strong> <%= post.commitInfo.author %></p>
+                    <p><strong>SHA:</strong> <%= post.commitInfo.sha %></p>
+                    <p><strong>URL:</strong> <a href="<%= post.commitInfo.url %>"><%= post.commitInfo.url %></a></p>
+                    <p><strong>Additions:</strong> <%= post.commitInfo.additions %></p>
+                    <p><strong>Deletions:</strong> <%= post.commitInfo.deletions %></p>
+
+                    <% if (post.commitInfo.files && post.commitInfo.files.length > 0) { %>
+                        <p><strong>Files Changed:</strong></p>
+                        <ul>
+                          <% post.commitInfo.files.forEach(file => { %>
+                            <li>
+                              <p><strong>Filename:</strong> <%= file.filename %></p>
+                              <p> Additions: <%= file.additions %>, Deletions: <%= file.deletions %>, Changes: <%= file.changes %>, Status: <%= file.status %> </p>
+                            </li>
+                          <% }); %>
+                        </ul>
                     <% } %>
                 <% } %>
-                <% if (post.imageUrl) { %>
-                    <img src="<%= post.imageUrl %>" alt="Afbeelding" style="max-width: 100%;">
-                <% } %>
                 <p><small>Gepost op: <%= post.createdAt.toDateString() %></small></p>
+
+                <!-- Like button form -->
+                <form action="/feed/<%= post._id %>/like" method="POST">
+                    <button type="submit" class="like-button">
+                        Like (<%= post.likes ? post.likes.length : 0 %>)
+                    </button>
+                </form>
+
+                <!-- Comments sectie -->
+                <div class="comment-section">
+                    <h4>Comments:</h4>
+                    <% if (post.comments && post.comments.length > 0) { %>
+                        <% post.comments.forEach(function(comment) { %>
+                            <div class="comment">
+                                <p class="comment-author"><%= comment.author %>:</p>
+                                <p class="comment-content"><%= comment.content %></p>
+                            </div>
+                        <% }); %>
+                    <% } %>
+                    <form action="/feed/<%= post._id %>/comment" method="POST" class="comment-form">
+                        <textarea name="content" placeholder="Schrijf een reactie..." required></textarea>
+                        <button type="submit">Comment</button>
+                    </form>
+                </div>
             </div>
         <% }); %>
     </div>
 
-    <% posts.forEach(function(post) { %>
-        <div class="post">
-          <h3><%= post.author.name %></h3>
-          <p><%= post.content %></p>
-          <form action="/feed/<%= post._id %>/like" method="POST">
-            <button type="submit" class="like-button">
-              Like (<%= post.likes ? post.likes.length : 0 %>)
-            </button>
-          </form>
-      
-          <!-- Comments sectie -->
-          <div class="comment-section">
-            <h4>Comments:</h4>
-            <% if (post.comments && post.comments.length > 0) { %>
-              <% post.comments.forEach(function(comment) { %>
-                <div class="comment">
-                  <p class="comment-author"><%= comment.author %>:</p>
-                  <p class="comment-content"><%= comment.content %></p>
-                </div>
-              <% }); %>
-            <% } %>
-            <form action="/feed/<%= post._id %>/comment" method="POST" class="comment-form">
-              <textarea name="content" placeholder="Schrijf een reactie..." required></textarea>
-              <button type="submit">Comment</button>
-            </form>
-          </div>
-        </div>
-    <% }); %>
-      
-      
-      
     <!-- Footer -->
     <footer>
         <div class="footer-container">
