@@ -14,6 +14,32 @@ router.get('/', isAuthenticated, async (req, res) => {
     // Haal alle posts op uit de database
     const posts = await Post.find().populate('author').sort({ createdAt: -1 });
 
+    // Voeg commit details toe aan elke post
+    for (let post of posts) {
+      if (post.commitInfo && post.commitInfo.sha) {
+        const { sha, url } = post.commitInfo;
+        const repoFullName = url.split('/').slice(-4, -2).join('/'); // Haal repo naam op uit URL
+
+        console.log("Fetching commit details for:", repoFullName, sha);
+    
+        try {
+          // Haal details op over de commit
+          const commitResponse = await axios.get(`https://api.github.com/repos/${repoFullName}/commits/${sha}`, {
+            headers: { Authorization: `Bearer ${req.session.accessToken}` }
+          });
+              
+          // Voeg de bestanden met toevoegingen en verwijderingen toe aan de post
+          post.filesChanged = commitResponse.data.files.map(file => ({
+            filename: file.filename,
+            additions: file.additions,
+            deletions: file.deletions
+          }));
+        } catch (error) {
+          console.error("Error bij het ophalen van commitdetails:", error.message);
+        }
+      }
+    }
+
     // Render de feed met de beschikbare posts en repositories
     res.render('feed', { user: req.session.userLogin, posts, repositories });
   } catch (error) {

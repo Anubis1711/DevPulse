@@ -62,66 +62,113 @@
         </form>
     </div>
 
-    <!-- Weergeven van posts -->
-    <div class="profile-info">
-        <% posts.forEach(function(post) { %>
-            <div class="post">
-                <h3>Gepost door: <%= post.author.login %></h3>
-                <p><%= post.content %></p>
-                <% if (post.commitInfo) { %>
-                    <p><strong>Commit Message:</strong> <%= post.commitInfo.message %></p>
-                    <p><strong>Author:</strong> <%= post.commitInfo.author %></p>
-                    <p><strong>SHA:</strong> <%= post.commitInfo.sha %></p>
-                    <p><strong>URL:</strong> <a href="<%= post.commitInfo.url %>"><%= post.commitInfo.url %></a></p>
-                    <p><strong>Additions:</strong> <%= post.commitInfo.additions %></p>
-                    <p><strong>Deletions:</strong> <%= post.commitInfo.deletions %></p>
+  <!-- Weergeven van posts -->  
+  <div class="profile-info">
+    <% for (let index = 0; index < posts.length; index++) { 
+        const post = posts[index]; %>
+        <div class="post">
+            <h3>Gepost door: <%= post.author.login %></h3>
+            <p><%= post.content %></p>
+            <% if (post.commitInfo) { %>
+                <p><strong>Commit Message:</strong> <%= post.commitInfo.message %></p>
+                <p><strong>Author:</strong> <%= post.commitInfo.author %></p>
+                <p><strong>SHA:</strong> <%= post.commitInfo.sha %></p>
+                <p><strong>URL:</strong> <a href="<%= post.commitInfo.url %>"><%= post.commitInfo.url %></a></p>
+                <p><strong>Additions:</strong> <%= post.commitInfo.additions %></p>
+                <p><strong>Deletions:</strong> <%= post.commitInfo.deletions %></p>
 
-                    <% if (post.commitInfo.files && post.commitInfo.files.length > 0) { %>
-                        <p><strong>Files Changed:</strong></p>
-                        <ul>
-                          <% post.commitInfo.files.forEach(file => { %>
-                            <li>
-                              <p><strong>Filename:</strong> <%= file.filename %></p>
-                              <p> Additions: <%= file.additions %>, Deletions: <%= file.deletions %>, Changes: <%= file.changes %>, Status: <%= file.status %> </p>
-                            </li>
-                          <% }); %>
-                        </ul>
-                    <% } %>
-                <% } %>
-                <p><small>Gepost op: <%= post.createdAt.toDateString() %></small></p>
-
-                <!-- Like button form -->
-                <form action="/feed/<%= post._id %>/like" method="POST">
-                    <button type="submit" class="like-button">
-                        Like (<%= post.likes ? post.likes.length : 0 %>)
-                    </button>
-                </form>
-
-                <!-- Comments sectie -->
-                <div class="comment-section">
-                    <h4>Comments:</h4>
-                    <% if (post.comments && post.comments.length > 0) { %>
-                        <% post.comments.forEach(function(comment) { %>
-                            <div class="comment">
-                                <p class="comment-author"><%= comment.author %>:</p>
-                                <p class="comment-content"><%= comment.content %></p>
-                            </div>
-                        <% }); %>
-                    <% } %>
-                    <form action="/feed/<%= post._id %>/comment" method="POST" class="comment-form">
-                        <textarea name="content" placeholder="Schrijf een reactie..." required></textarea>
-                        <button type="submit">Comment</button>
-                    </form>
+                <!-- Grafiekweergave voor bestandenwijzigingen -->
+                <div>
+                  <canvas id="fileChangesChart-<%= index %>" width="400" height="200"></canvas>
                 </div>
-            </div>
-        <% }); %>
-    </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-container">
-            <p>© 2024 DevPulse. All rights reserved.</p>
+                <% if (post.filesChanged) { %>
+                  <script>
+                    const fileLabels<%= index %> = <%- JSON.stringify(post.filesChanged.map(file => file.filename)) %>;
+                    const additionsData<%= index %> = <%- JSON.stringify(post.filesChanged.map(file => file.additions)) %>;
+                    const deletionsData<%= index %> = <%- JSON.stringify(post.filesChanged.map(file => file.deletions)) %>;
+                
+                    const ctx<%= index %> = document.getElementById('fileChangesChart-<%= index %>').getContext('2d');
+                    new Chart(ctx<%= index %>, {
+                        type: 'bar',
+                        data: {
+                            labels: fileLabels<%= index %>,
+                            datasets: [
+                                {
+                                    label: 'Toevoegingen',
+                                    data: additionsData<%= index %>,
+                                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    borderWidth: 1
+                                },
+                                {
+                                    label: 'Verwijderingen',
+                                    data: deletionsData<%= index %>,
+                                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                                    borderColor: 'rgba(255, 99, 132, 1)',
+                                    borderWidth: 1
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                  </script>
+                <% } %>
+                
+                <% if (post.commitInfo.files && post.commitInfo.files.length > 0) { %>
+                    <p><strong>Files Changed:</strong></p>
+                    <ul>
+                      <% post.commitInfo.files.forEach(file => { %>
+                        <li>
+                          <p><strong>Filename:</strong> <%= file.filename %></p>
+                          <p> Additions: <%= file.additions %>, Deletions: <%= file.deletions %>, Changes: <%= file.changes %>, Status: <%= file.status %> </p>
+                        </li>
+                      <% }); %>
+                    </ul>
+                <% } %>
+            <% } %>
+            <p><small>Gepost op: <%= post.createdAt.toDateString() %></small></p>
+
+            <!-- Like button form -->
+            <form action="/feed/<%= post._id %>/like" method="POST">
+                <button type="submit" class="like-button">
+                    Like (<%= post.likes ? post.likes.length : 0 %>)
+                </button>
+            </form>
+
+            <!-- Comments sectie -->
+            <div class="comment-section">
+                <h4>Comments:</h4>
+                <% if (post.comments && post.comments.length > 0) { %>
+                    <% post.comments.forEach(function(comment) { %>
+                        <div class="comment">
+                            <p class="comment-author"><%= comment.author %>:</p>
+                            <p class="comment-content"><%= comment.content %></p>
+                        </div>
+                    <% }); %>
+                <% } %>
+                <form action="/feed/<%= post._id %>/comment" method="POST" class="comment-form">
+                    <textarea name="content" placeholder="Schrijf een reactie..." required></textarea>
+                    <button type="submit">Comment</button>
+                </form>
+            </div>
         </div>
-    </footer>
+    <% } %>
+  </div>
+
+
+  <!-- Footer -->
+  <footer>
+      <div class="footer-container">
+          <p>© 2024 DevPulse. All rights reserved.</p>
+      </div>
+  </footer>
 </body>
 </html>
