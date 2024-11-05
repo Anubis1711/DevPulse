@@ -1,61 +1,11 @@
+/* profile.css */
+
 /* Algemene Pagina Styling */
 body {
-    font-family: 'Courier Prime', monospace;
-    margin: 0;
-    padding: 0;
     background-color: #f6d5b5;
-    color: #333;
 }
 
-/* Navbar Styling voor Profielpagina */
-.navbar-profile {
-    background-color: #8a503d;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #ffffff;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-.nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.logo-image {
-    width: 50px; /* Grotere logo-afbeelding */
-    height: auto;
-}
-
-.nav-links-profile {
-    list-style: none;
-    display: flex;
-    gap: 30px;
-    margin: 0;
-    padding: 0;
-}
-
-.nav-links-profile a {
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 1.2em;
-    padding: 10px;
-    transition: background-color 0.3s, color 0.3s;
-    border-radius: 5px;
-}
-
-.nav-links-profile a:hover {
-    background-color: #ff6f61;
-    color: #ffffff;
-    border-radius: 10px;
-}
-
-/* Header met Afbeelding */
-
+/* Header met Achtergrondafbeelding */
 .profile-header {
     position: relative;
     width: 100%;
@@ -67,109 +17,25 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: brightness(0.7); /* Dim de afbeelding iets voor betere zichtbaarheid van de tekst */
-}
-
-.profile-header p {
-    font-size: 1.2em;
-    margin-top: 5px;
-    color: #ffe0b3; /* Lichte kleur om het leesbaar te houden op een donkere achtergrond */
-}
-
-.header-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    color: #fff;
-}
-
-.profile-info-container {
-    position: relative;
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.9); /* Subtiele achtergrond zodat tekst leesbaar blijft */
-    padding: 10px 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtiele schaduw voor diepte */
-}
-
-.profile-info-container a {
-    color: #f0b49a;
-    text-decoration: none;
-    font-size: 1.2em;
-}
-
-.profile-info-container a:hover {
-    color: #ff6f61; /* Hoverkleur */
-}
-
-.neon-title {
-    font-size: 2em;
-    font-weight: bold;
-    text-shadow: 0 0 10px #ff9d76, 0 0 20px #ff6f61; /* Neon-effect */
-    color: #333;
-    margin-top: 10px;
+    filter: brightness(0.7);
 }
 
 .profile-avatar {
     border-radius: 50%;
     width: 120px;
     height: 120px;
-    border: 3px solid #ff9d76; /* Oranje accent dat bij de sfeer past */
+    border: 3px solid #ff9d76;
     margin-bottom: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Subtiele schaduw voor meer diepte */
-}
-
-.profile-avatar:hover {
-    transform: scale(1.05);
-}
-
-/* Pulse */
-.pulse-line {
-    position: relative;
-    height: 4px;
-    width: 80%;
-    margin: 20px auto 40px;
-    background: #2e2e2e; /* Donkergrijze lijn om contrast te creëren */
-    overflow: hidden;
-    z-index: 5; /* Zorg dat de pulse-lijn onder de titel ligt maar wel zichtbaar is */
-}
-
-.pulse-line::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -40%;
-    width: 40%;
-    height: 100%;
-    background: linear-gradient(to right, #ff5900, #ffb300); /* Helderder gradient voor beter contrast */
-    animation: pulseAnimation 2.5s infinite ease-in-out;
-}
-
-@keyframes pulseAnimation {
-    0% {
-        left: -40%;
-    }
-    50% {
-        left: 100%;
-    }
-    100% {
-        left: 100%;
-    }
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
 /* Profiel Info Sectie */
 .profile-info {
     text-align: center;
     padding: 40px 20px;
-    background-color: #f2e0d2; /* Lichte kleur voor een warme en uitnodigende sfeer */
+    background-color: #333333; /* Donkere achtergrond voor profiel */
+    color: #f4f4f4; /* Lichte tekstkleur */
     border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
     width: 80%;
     max-width: 600px;
@@ -177,164 +43,18 @@ body {
     margin-right: auto;
 }
 
-.profile-info form textarea {
-    width: 100%;
-    height: 150px;
-    padding: 15px;
-    font-size: 1em;
-    font-family: 'Courier New', Courier, monospace;
-    margin: 10px 0;
-    border-radius: 8px;
-    border: 2px solid #ff9d76;
-    background-color: #2e2e2e;
-    color: #f4f4f4;
-    resize: none;
+.profile-info-container {
+    position: relative;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 20px;
+    border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.profile-info-container {
-    text-align: center;
-}
-
-.profile-info button {
-    padding: 15px 30px;
-    font-size: 1.2em;
-    background-color: #ff6f61;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-    margin-top: 20px;
-}
-
-.profile-info button:hover {
-    background-color: #d95a4a;
-    transform: translateY(-2px);
-}
-
-.profile-stats {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    margin-top: 20px;
-    max-width: 800px;
+/* Pulse */
+.pulse-line {
+    height: 4px;
+    width: 80%;
     margin: 20px auto;
+    background: #2e2e2e;
 }
-
-.profile-stats p {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #ff9d76;
-}
-
-/* Footer Styling */
-footer {
-    background-color: #8a503d;
-    color: white;
-    padding: 20px;
-    text-align: center;
-}
-
-.like-button {
-    background-color: #ff6f61; /* Helderder kleur voor de like-knop */
-    color: #ffffff;
-    padding: 10px 20px;
-    font-size: 1em;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-.like-button:hover {
-    background-color: #d95a4a;
-    transform: translateY(-2px);
-}
-
-.like-count {
-    font-size: 1em;
-    color: #333;
-    margin-top: 5px;
-}
-
-.comment-section {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #f4f4f4; /* Lichte achtergrond voor contrast */
-    border-radius: 10px;
-}
-
-.comment-section .comment {
-    margin-bottom: 10px;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 10px;
-}
-
-.comment-author {
-    font-weight: bold;
-    color: #ff6f61; /* Helderder accentkleur voor de gebruikersnaam */
-}
-
-.comment-content {
-    margin-top: 5px;
-    color: #333;
-}
-
-.comment-form textarea {
-    width: 100%;
-    height: 100px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    resize: none;
-}
-
-.comment-form button {
-    background-color: #ff6f61;
-    color: #ffffff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-    margin-top: 10px;
-}
-
-.comment-form button:hover {
-    background-color: #d95a4a;
-    transform: translateY(-2px);
-}
-
-@media (max-width: 768px) {
-    .like-button, .comment-form button {
-        width: 100%;
-        font-size: 0.9em;
-        padding: 8px 16px;
-    }
-
-    .comment-section {
-        padding: 5px;
-    }
-
-    .comment-form textarea {
-        height: 80px;
-    }
-}
-
-.commit-week-overview {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.hearts-container {
-    display: flex;
-    justify-content: space-around;
-    gap: 10px;
-}
-
-.heart {
-    font-size: 20px;
-    transition: transform 0.3s ease;
-}
-
