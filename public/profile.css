@@ -2,7 +2,31 @@
 
 /* Algemene Pagina Styling */
 body {
-    background-color: #f6d5b5;
+    background-color: #f4f4f4;
+}
+
+/* Navbar */
+.navbar-profile {
+    background-color: #24292e;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-image {
+    width: 50px;
+    height: auto;
 }
 
 /* Header met Achtergrondafbeelding */
@@ -17,44 +41,116 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: brightness(0.7);
+    filter: brightness(0.6);
+}
+
+.header-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #fff;
+    text-align: center;
+    z-index: 1;
+}
+
+/* Profielfoto en Naam */
+.profile-info-container {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 15px 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    margin-top: -60px;
+    color: #ffffff;
 }
 
 .profile-avatar {
     border-radius: 50%;
     width: 120px;
     height: 120px;
-    border: 3px solid #ff9d76;
-    margin-bottom: 10px;
+    border: 4px solid #ff9d76;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.neon-title {
+    font-size: 2em;
+    font-weight: bold;
+    text-shadow: 0 0 10px #ff9d76, 0 0 20px #ff6f61;
+    color: #ffffff;
 }
 
 /* Profiel Info Sectie */
 .profile-info {
-    text-align: center;
-    padding: 40px 20px;
-    background-color: #333333; /* Donkere achtergrond voor profiel */
-    color: #f4f4f4; /* Lichte tekstkleur */
+    background-color: #24292e;
+    color: #f4f4f4;
+    padding: 30px;
     border-radius: 10px;
-    margin-top: 20px;
-    width: 80%;
     max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 30px auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.profile-info-container {
-    position: relative;
-    background: rgba(255, 255, 255, 0.9);
+.profile-info textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 1px solid #ff9d76;
+    background-color: #333;
+    color: #f4f4f4;
+    resize: none;
+}
+
+.profile-info button {
+    background-color: #ff6f61;
+    color: #ffffff;
+    border: none;
     padding: 10px 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
 }
 
-/* Pulse */
-.pulse-line {
-    height: 4px;
-    width: 80%;
-    margin: 20px auto;
-    background: #2e2e2e;
+.profile-info button:hover {
+    background-color: #d95a4a;
+}
+
+/* Commit Overview */
+.commit-week-overview {
+    background-color: #24292e;
+    color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.commit-week-overview h3 {
+    margin-bottom: 15px;
+}
+
+.hearts-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.heart {
+    font-size: 24px;
+    transition: transform 0.3s ease;
+}
+
+.heart:hover {
+    transform: scale(1.2);
 }
