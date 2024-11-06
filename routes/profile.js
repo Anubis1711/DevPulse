@@ -41,6 +41,9 @@ router.get('/', isAuthenticated, async (req, res) => {
     });
     const repositories = reposResponse.data;
 
+    // Variabele om bij te houden of er een update nodig is
+    let isUpdateNeeded = false;
+
     // Loop door elke repository en haal de commits op voor de afgelopen week
     for (const repo of repositories) {
       try {
@@ -62,20 +65,14 @@ router.get('/', isAuthenticated, async (req, res) => {
             });
 
             if (existingStat) {
-              // Verhoog de bestaande commit-telling voor deze dag
+              // Als de bestaande commits al overeenkomen, doe niets
               if (existingStat.commits !== dailyCommits[dayIndex]) {
-                dailyCommits[dayIndex]++;
-                existingStat.commits = dailyCommits[dayIndex];
-                await existingStat.save();
+                dailyCommits[dayIndex] = existingStat.commits;
               }
             } else {
               // Voeg de commit toe aan de dailyCommits-array en maak een nieuw document
               dailyCommits[dayIndex]++;
-              await CommitStats.create({
-                userId: user._id,
-                date: commitDate.toDate(),
-                commits: dailyCommits[dayIndex]
-              });
+              isUpdateNeeded = true;  // Markeer dat we een update nodig hebben
             }
           }
         }
@@ -85,6 +82,20 @@ router.get('/', isAuthenticated, async (req, res) => {
         } else {
           console.error("Fout bij het ophalen van commits:", err.message);
         }
+      }
+    }
+
+    // Update database alleen als er nieuwe gegevens zijn
+    if (isUpdateNeeded) {
+      for (let i = 0; i < 7; i++) {
+        const date = moment(lastWeek).add(i, 'days').toDate();
+
+        // Zoek een bestaand document of maak een nieuw aan
+        await CommitStats.findOneAndUpdate(
+          { userId: user._id, date },
+          { userId: user._id, date, commits: dailyCommits[i] },
+          { upsert: true }  // Maakt een nieuw document aan als het niet bestaat
+        );
       }
     }
 
