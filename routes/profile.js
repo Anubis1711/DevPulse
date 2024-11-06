@@ -55,16 +55,20 @@ router.get('/', isAuthenticated, async (req, res) => {
           const dayIndex = commitDate.diff(lastWeek, 'days');
 
           if (dayIndex >= 0 && dayIndex < 7) {
+            // Zoek een bestaande `CommitStats` document op basis van datum en userId
             const existingStat = await CommitStats.findOne({
               userId: user._id,
               date: commitDate.toDate()
             });
 
             if (existingStat) {
-              // Update alleen de dailyCommits array zonder opnieuw op te slaan
-              dailyCommits[dayIndex] = existingStat.commits;
+              // Update het bestaande document zonder nieuwe aan te maken
+              if (existingStat.commits !== dailyCommits[dayIndex]) {
+                existingStat.commits = dailyCommits[dayIndex];
+                await existingStat.save();
+              }
             } else {
-              // Voeg nieuwe commit toe aan dailyCommits en sla deze op in de database
+              // Voeg de commit toe als het document niet bestaat
               dailyCommits[dayIndex]++;
               await CommitStats.create({
                 userId: user._id,
@@ -109,5 +113,3 @@ router.post('/', isAuthenticated, async (req, res) => {
 });
 
 module.exports = router;
-
-//test
