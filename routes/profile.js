@@ -27,7 +27,7 @@ router.get('/', isAuthenticated, async (req, res) => {
       date: { $gte: lastWeek.toDate() }
     });
 
-    // Map bestaande commitgegevens naar de dailyCommits-array
+    // Bestaande commitgegevens worden toegewezen aan de dailyCommits-array
     commitStats.forEach(stat => {
       const dayIndex = moment(stat.date).diff(lastWeek, 'days');
       if (dayIndex >= 0 && dayIndex < 7) {
@@ -49,26 +49,27 @@ router.get('/', isAuthenticated, async (req, res) => {
           params: { since: lastWeek.toISOString() }
         });
 
-        // Verwerk alleen nieuwe commits van deze week
+        // Verwerk nieuwe commits van deze week
         for (const commit of commitsResponse.data) {
           const commitDate = moment(commit.commit.author.date).startOf('day');
           const dayIndex = commitDate.diff(lastWeek, 'days');
 
           if (dayIndex >= 0 && dayIndex < 7) {
             // Zoek een bestaande `CommitStats` document op basis van datum en userId
-            const existingStat = await CommitStats.findOne({
+            let existingStat = await CommitStats.findOne({
               userId: user._id,
               date: commitDate.toDate()
             });
 
             if (existingStat) {
-              // Update het bestaande document zonder nieuwe aan te maken
+              // Verhoog de bestaande commit-telling voor deze dag
               if (existingStat.commits !== dailyCommits[dayIndex]) {
+                dailyCommits[dayIndex]++;
                 existingStat.commits = dailyCommits[dayIndex];
                 await existingStat.save();
               }
             } else {
-              // Voeg de commit toe als het document niet bestaat
+              // Voeg de commit toe aan de dailyCommits-array en maak een nieuw document
               dailyCommits[dayIndex]++;
               await CommitStats.create({
                 userId: user._id,
@@ -82,7 +83,7 @@ router.get('/', isAuthenticated, async (req, res) => {
         if (err.response && err.response.status === 409) {
           console.warn(`Geen commits beschikbaar voor repository: ${repo.full_name}`);
         } else {
-          console.error("Error tijdens het ophalen van commits:", err.message);
+          console.error("Fout bij het ophalen van commits:", err.message);
         }
       }
     }
@@ -90,12 +91,12 @@ router.get('/', isAuthenticated, async (req, res) => {
     // Render de profielpagina met dailyCommits (gecombineerde commits van alle repositories)
     res.render('profile', { user, dailyCommits, repositories });
   } catch (error) {
-    console.error("Error tijdens het ophalen van commits of repositories:", error.message);
+    console.error("Fout bij het ophalen van commits of repositories:", error.message);
     res.status(500).send("Er ging iets mis bij het ophalen van de commits of repositories.");
   }
 });
 
-// Profile POST route om de beschrijving te updaten
+// Profiel POST-route om de beschrijving te updaten
 router.post('/', isAuthenticated, async (req, res) => {
   const { login, description } = req.body;
 
@@ -107,7 +108,7 @@ router.post('/', isAuthenticated, async (req, res) => {
     await User.updateOne({ login }, { description });
     res.redirect('/profile');
   } catch (error) {
-    console.error("Error tijdens het updaten van de gebruiker:", error.message);
+    console.error("Fout bij het updaten van de gebruiker:", error.message);
     return res.status(500).send("Er ging iets mis bij het updaten van de gebruiker.");
   }
 });
