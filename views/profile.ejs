@@ -4,66 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profiel - <%= user.login %></title>
-    <link rel="stylesheet" href="/shared.css">
     <link rel="stylesheet" href="/profile.css">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar-profile">
-        <div class="nav-logo">
-            <img src="/icons/DevPulse-logo.svg" alt="DevPulse Logo" class="logo-image">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <img src="/icons/DevPulse-logo.svg" alt="DevPulse Logo">
             <h2>DevPulse</h2>
         </div>
-        <ul class="nav-links-profile">
+        <ul class="nav-links">
+            <li><a href="/profile">Profile</a></li>
             <li><a href="/feed">Feed</a></li>
             <li><a href="/logout">Log out</a></li>
         </ul>
-    </nav>
+    </div>
 
-    <!-- Header met Achtergrondafbeelding -->
-    <div class="profile-header">
-        <img class="header-background" src="images/lofi-cafe-soft.jpg" alt="Header Background">
-        <div class="header-overlay">
-            <div class="profile-info-container">
-                <img class="profile-avatar" src="<%= user.avatarUrl %>" alt="Avatar">
-                <h1 class="neon-title"><%= user.name || user.login %></h1>
-                <p><a href="<%= user.url %>" target="_blank">@<%= user.login %></a></p>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Profiel Header -->
+        <div class="profile-header">
+            <img class="profile-avatar" src="<%= user.avatarUrl %>" alt="Avatar">
+            <div class="profile-info">
+                <h1><%= user.name || user.login %></h1>
+                <p>@<%= user.login %></p>
+                <p>Hier kan je je beschrijving aanpassen</p>
+            </div>
+        </div>
+
+        <!-- Beschrijving Sectie -->
+        <div class="description-section">
+            <form action="/profile" method="POST">
+                <textarea name="description" placeholder="Beschrijf jezelf hier..."><%= user.description %></textarea>
+                <button type="submit">Update Beschrijving</button>
+            </form>
+            <div class="profile-stats">
+                <p><strong>Volgers:</strong> <%= user.followers %></p>
+                <p><strong>Volgend:</strong> 150</p>
+            </div>
+        </div>
+
+        <!-- Commit Overzicht -->
+        <div class="commit-overview">
+            <h3>Weekoverzicht van commits</h3>
+            <div class="hearts-container">
+                <% dailyCommits.forEach(commits => { %>
+                    <div class="heart" style="transform: scale(<%= 1 + (commits * 0.1) %>);">
+                        ❤️ (<%= commits %>)
+                    </div>
+                <% }); %>
             </div>
         </div>
     </div>
-    
-    <!-- Pulse Line -->
-    <div class="pulse-line"></div>
 
-    <!-- Profiel Info Sectie -->
-    <div class="profile-info">
-        <form action="/profile" method="POST">
-            <input type="hidden" name="username" value="<%= user.login %>">
-            <textarea name="description" placeholder="Beschrijf jezelf hier..."><%= user.description %></textarea>
-            <button type="submit">Update Beschrijving</button>
-        </form>
-        <div class="profile-stats">
-            <p><strong>Volgers:</strong> <%= user.followers %></p>
-            <p><strong>Volgend:</strong> 150</p>
-        </div>
-    </div>
-
-    <div class="commit-week-overview">
-        <h3>Weekoverzicht van commits</h3>
-        <div class="hearts-container">
-            <% dailyCommits.forEach(commits => { %>
-                <div class="heart" style="transform: scale(<%= 1 + (commits * 0.1) %>);">
-                    ❤️ (<%= commits %>)
-                </div>
-            <% }); %>
-        </div>
-    </div>
-
-    <!-- Footer -->
     <footer>
-        <div class="footer-container">
-            <p>© 2024 DevPulse. All rights reserved.</p>
-        </div>
+        <p>© 2024 DevPulse. All rights reserved.</p>
     </footer>
 </body>
 </html>

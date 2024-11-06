@@ -1,148 +1,145 @@
-/* profile.css */
-
 /* Algemene Pagina Styling */
 body {
+    font-family: 'Courier Prime', monospace;
+    margin: 0;
+    padding: 0;
+    display: flex;
     background-color: #f4f4f4;
 }
 
-/* Navbar */
-.navbar-profile {
+/* Sidebar Styling */
+.sidebar {
+    width: 250px;
     background-color: #24292e;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     color: #ffffff;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-.nav-logo {
+    padding: 20px;
+    height: 100vh;
     display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.logo-image {
-    width: 50px;
-    height: auto;
-}
-
-/* Header met Achtergrondafbeelding */
-.profile-header {
-    position: relative;
-    width: 100%;
-    height: 400px;
-    overflow: hidden;
-}
-
-.header-background {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.6);
-}
-
-.header-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-    color: #fff;
-    text-align: center;
-    z-index: 1;
+    align-items: center;
+    position: fixed;
 }
 
-/* Profielfoto en Naam */
-.profile-info-container {
-    background: rgba(0, 0, 0, 0.7);
-    padding: 15px 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    margin-top: -60px;
+.logo img {
+    width: 50px;
+    margin-bottom: 10px;
+}
+
+.logo h2 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.nav-links li {
+    margin: 15px 0;
+}
+
+.nav-links a {
     color: #ffffff;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-links a:hover {
+    background-color: #444;
+}
+
+/* Main Content Styling */
+.main-content {
+    margin-left: 270px; /* Space for the sidebar */
+    padding: 30px;
+    width: calc(100% - 270px);
+}
+
+/* Profiel Header */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
 
 .profile-avatar {
     border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    border: 4px solid #ff9d76;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-}
-
-.neon-title {
-    font-size: 2em;
-    font-weight: bold;
-    text-shadow: 0 0 10px #ff9d76, 0 0 20px #ff6f61;
-    color: #ffffff;
-}
-
-/* Profiel Info Sectie */
-.profile-info {
-    background-color: #24292e;
-    color: #f4f4f4;
-    padding: 30px;
-    border-radius: 10px;
-    max-width: 600px;
-    margin: 30px auto;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.profile-info textarea {
-    width: 100%;
+    width: 100px;
     height: 100px;
+    border: 3px solid #ff9d76;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.profile-info h1 {
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.profile-info p {
+    color: #555;
+}
+
+/* Beschrijving Sectie */
+.description-section {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.description-section textarea {
+    width: 100%;
+    height: 80px;
     padding: 10px;
     font-size: 1em;
     border-radius: 5px;
-    border: 1px solid #ff9d76;
-    background-color: #333;
-    color: #f4f4f4;
+    border: 1px solid #ddd;
     resize: none;
+    margin-bottom: 10px;
 }
 
-.profile-info button {
+.description-section button {
     background-color: #ff6f61;
     color: #ffffff;
-    border: none;
     padding: 10px 20px;
-    font-size: 1em;
+    border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
 }
 
-.profile-info button:hover {
+.description-section button:hover {
     background-color: #d95a4a;
 }
 
-/* Commit Overview */
-.commit-week-overview {
-    background-color: #24292e;
-    color: #ffffff;
+/* Commit Overzicht */
+.commit-overview {
+    background-color: #ffffff;
     padding: 20px;
     border-radius: 10px;
-    max-width: 600px;
-    margin: 0 auto;
-    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.commit-week-overview h3 {
-    margin-bottom: 15px;
+.commit-overview h3 {
+    margin: 0 0 15px;
 }
 
 .hearts-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: 15px;
 }
 
@@ -153,4 +150,16 @@ body {
 
 .heart:hover {
     transform: scale(1.2);
+}
+
+/* Footer Styling */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #24292e;
+    color: #ffffff;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 0;
 }
