@@ -49,22 +49,21 @@ router.get('/', isAuthenticated, async (req, res) => {
           params: { since: lastWeek.toISOString() }
         });
 
-        // Voeg alleen nieuwe commits toe aan dailyCommits en sla deze op in de database
+        // Voeg alleen nieuwe commits toe aan dailyCommits en update de database
         for (const commit of commitsResponse.data) {
           const commitDate = moment(commit.commit.author.date).startOf('day');
           const dayIndex = commitDate.diff(lastWeek, 'days');
 
           if (dayIndex >= 0 && dayIndex < 7) {
-            const existingCommitStat = await CommitStats.findOne({
-              userId: user._id,
-              date: commitDate.toDate()
-            });
+            // Check of commit voor deze datum al in de database is opgeslagen
+            const existingStat = commitStats.find(stat => moment(stat.date).isSame(commitDate, 'day'));
 
-            // Controleer of de commit al is opgeslagen, zo niet, dan opslaan
-            if (!existingCommitStat) {
-              dailyCommits[dayIndex]++; // Verhoog de count voor de dag
-
-              // Voeg de nieuwe commitstatistiek toe aan de database
+            if (existingStat) {
+              // Update alleen de dailyCommits-array zonder database aanpassing
+              dailyCommits[dayIndex] = existingStat.commits;
+            } else {
+              // Voeg nieuwe commit toe aan de array en sla deze op in de database
+              dailyCommits[dayIndex]++;
               await CommitStats.create({
                 userId: user._id,
                 date: commitDate.toDate(),
