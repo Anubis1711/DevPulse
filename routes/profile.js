@@ -41,7 +41,7 @@ router.get('/', isAuthenticated, async (req, res) => {
     });
     const repositories = reposResponse.data;
 
-    // Voor elke repository, haal commits van de afgelopen week op
+    // Loop door elke repository en haal de commits op voor de afgelopen week
     for (const repo of repositories) {
       try {
         const commitsResponse = await axios.get(`https://api.github.com/repos/${repo.full_name}/commits`, {
@@ -49,20 +49,22 @@ router.get('/', isAuthenticated, async (req, res) => {
           params: { since: lastWeek.toISOString() }
         });
 
-        // Voeg alleen nieuwe commits toe aan dailyCommits en update de database
+        // Verwerk alleen nieuwe commits van deze week
         for (const commit of commitsResponse.data) {
           const commitDate = moment(commit.commit.author.date).startOf('day');
           const dayIndex = commitDate.diff(lastWeek, 'days');
 
           if (dayIndex >= 0 && dayIndex < 7) {
-            // Check of commit voor deze datum al in de database is opgeslagen
-            const existingStat = commitStats.find(stat => moment(stat.date).isSame(commitDate, 'day'));
+            const existingStat = await CommitStats.findOne({
+              userId: user._id,
+              date: commitDate.toDate()
+            });
 
             if (existingStat) {
-              // Update alleen de dailyCommits-array zonder database aanpassing
+              // Update alleen de dailyCommits array zonder opnieuw op te slaan
               dailyCommits[dayIndex] = existingStat.commits;
             } else {
-              // Voeg nieuwe commit toe aan de array en sla deze op in de database
+              // Voeg nieuwe commit toe aan dailyCommits en sla deze op in de database
               dailyCommits[dayIndex]++;
               await CommitStats.create({
                 userId: user._id,
