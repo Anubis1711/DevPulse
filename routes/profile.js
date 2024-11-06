@@ -18,10 +18,10 @@ router.get('/', isAuthenticated, async (req, res) => {
     }
 
     const accessToken = req.session.accessToken;
-    const lastWeek = moment().subtract(6, 'days').startOf('day'); // De startdatum voor een week geleden
-    const dailyCommits = Array(7).fill(0); // Array om dagelijkse commits bij te houden
+    const lastWeek = moment().subtract(6, 'days').startOf('day');
+    const dailyCommits = Array(7).fill(0);
 
-    // Haal commitgegevens uit de database voor de afgelopen week
+    // Haal bestaande commitgegevens uit de database voor de afgelopen week
     const commitStats = await CommitStats.find({
       userId: user._id,
       date: { $gte: lastWeek.toDate() }
@@ -49,22 +49,30 @@ router.get('/', isAuthenticated, async (req, res) => {
           params: { since: lastWeek.toISOString() }
         });
 
-        // Voeg nieuwe commits toe aan dailyCommits en sla op in de database
-        commitsResponse.data.forEach(async (commit) => {
+        // Voeg alleen nieuwe commits toe aan dailyCommits en sla deze op in de database
+        for (const commit of commitsResponse.data) {
           const commitDate = moment(commit.commit.author.date).startOf('day');
           const dayIndex = commitDate.diff(lastWeek, 'days');
 
           if (dayIndex >= 0 && dayIndex < 7) {
-            dailyCommits[dayIndex]++;  // Verhoog de count voor de dag
+            const existingCommitStat = await CommitStats.findOne({
+              userId: user._id,
+              date: commitDate.toDate()
+            });
 
-            // Update of maak nieuwe commitstatistiek aan voor deze dag in de database
-            await CommitStats.findOneAndUpdate(
-              { userId: user._id, date: commitDate.toDate() },
-              { $set: { commits: dailyCommits[dayIndex] } },
-              { upsert: true, new: true }
-            );
+            // Controleer of de commit al is opgeslagen, zo niet, dan opslaan
+            if (!existingCommitStat) {
+              dailyCommits[dayIndex]++; // Verhoog de count voor de dag
+
+              // Voeg de nieuwe commitstatistiek toe aan de database
+              await CommitStats.create({
+                userId: user._id,
+                date: commitDate.toDate(),
+                commits: dailyCommits[dayIndex]
+              });
+            }
           }
-        });
+        }
       } catch (err) {
         if (err.response && err.response.status === 409) {
           console.warn(`Geen commits beschikbaar voor repository: ${repo.full_name}`);
