@@ -29,13 +29,14 @@
             <div class="profile-info">
                 <h1><%= user.name || user.login %></h1>
                 <p>@<%= user.login %></p>
-                <p>Hier kan je je beschrijving aanpassen</p>
+                <p><%= user.description %></p>
             </div>
         </div>
 
         <!-- Beschrijving Sectie -->
         <div class="description-section">
             <form action="/profile" method="POST">
+                <input type="hidden" name="login" value="<%= user.login %>">
                 <textarea name="description" placeholder="Beschrijf jezelf hier..."><%= user.description %></textarea>
                 <button type="submit">Update Beschrijving</button>
             </form>
