@@ -49,8 +49,12 @@
         <div class="commit-overview">
             <h3>Weekoverzicht van commits</h3>
             <div class="hearts-container">
-                <% dailyCommits.forEach(commit => { %>
-                    <span class="heart" data-commits="<%= commit %>">❤️</span>
+                <% dailyCommits.forEach((commit, index) => { %>
+                    <div class="heart" 
+                         data-commits="<%= commit %>" 
+                         style="font-size: <%= heartSizes[index] %>px;">
+                        ❤️
+                    </div>
                 <% }); %>
             </div>
         </div>

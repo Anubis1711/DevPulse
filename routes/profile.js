@@ -41,7 +41,6 @@ router.get('/', isAuthenticated, async (req, res) => {
     });
     const repositories = reposResponse.data;
 
-    // Variabele om bij te houden of er een update nodig is
     let isUpdateNeeded = false;
 
     // Loop door elke repository en haal de commits op voor de afgelopen week
@@ -99,8 +98,16 @@ router.get('/', isAuthenticated, async (req, res) => {
       }
     }
 
+    // Bereken de grootte van elk hartje op basis van het aantal commits
+    const maxCommits = 10;
+    const heartSizes = dailyCommits.map(commitCount => {
+      const scale = Math.min(commitCount, maxCommits) / maxCommits;
+      const heartSize = 24 + (24 * scale); // Basisgrootte 24px, max 48px
+      return heartSize;
+    });
+
     // Render de profielpagina met dailyCommits (gecombineerde commits van alle repositories)
-    res.render('profile', { user, dailyCommits, repositories });
+    res.render('profile', { user, dailyCommits, heartSizes, repositories });
   } catch (error) {
     console.error("Fout bij het ophalen van commits of repositories:", error.message);
     res.status(500).send("Er ging iets mis bij het ophalen van de commits of repositories.");
