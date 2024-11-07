@@ -147,3 +147,52 @@ footer {
     width: 100%;
     left: 0;
 }
+
+/* Post Form Styling */
+.post-form {
+    background-color: #333333; 
+    color: #f4f4f4;
+    padding: 25px; 
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; 
+}
+
+.post-form textarea,
+.post-form select,
+.post-form input[type="text"] {
+    width: 100%;
+    padding: 12px; 
+    border-radius: 5px;
+    border: 1px solid #555;
+    background-color: #444444;
+    color: #f4f4f4;
+    font-size: 1em;
+}
+
+.post-form select {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Post-knop stijl met dezelfde kleur als de invoervelden */
+.post-form button {
+    background-color: #444444; /* Zelfde kleur als de velden */
+    color: white;
+    padding: 12px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+}
+
+.post-form button:hover {
+    background-color: #555555; /* Iets donkerdere kleur bij hover */
+    transform: translateY(-2px);
+}
