@@ -30,147 +30,149 @@
                 console.error('Er ging iets mis bij het ophalen van de commits');
             }
         }
+
+        function toggleDropdown(id) {
+            const element = document.getElementById(id);
+            element.style.display = element.style.display === "none" ? "block" : "none";
+        }
     </script>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar-profile">
-        <div class="nav-logo">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
             <img src="/icons/DevPulse-logo.svg" alt="DevPulse Logo" class="logo-image">
             <h2>DevPulse</h2>
         </div>
-        <ul class="nav-links-profile">
+        <ul class="nav-links">
             <li><a href="/profile">Profile</a></li>
             <li><a href="/feed">Feed</a></li>
             <li><a href="/logout">Log out</a></li>
         </ul>
-    </nav>
-
-    <!-- Formulier om een nieuwe post te maken -->
-    <div class="profile-info">
-        <form action="/feed/new" method="POST">
-            <textarea name="content" placeholder="Wat heb je gedaan vandaag met je project?" required></textarea>
-            <select name="repository" id="repository" onchange="fetchCommits(this.value)">
-                <option value="">Selecteer een repository (optioneel)</option>
-                <% repositories.forEach(function(repo) { %>
-                    <option value="<%= repo.full_name %>"><%= repo.name %></option>
-                <% }); %>
-            </select>
-            <select name="commitInfo" id="commitInfo">
-                <option value="">Selecteer een commit (optioneel)</option>
-            </select>
-            <input type="text" name="imageUrl" placeholder="URL van afbeelding (optioneel)">
-            <button type="submit">Post!</button>
-        </form>
     </div>
 
-  <!-- Weergeven van posts -->  
-  <div class="profile-info">
-    <% for (let index = 0; index < posts.length; index++) { 
-        const post = posts[index]; %>
-        <div class="post">
-            <h3>Gepost door: <%= post.author.login %></h3>
-            <p><%= post.content %></p>
-            <% if (post.commitInfo) { %>
-                <p><strong>Commit Message:</strong> <%= post.commitInfo.message %></p>
-                <p><strong>Author:</strong> <%= post.commitInfo.author %></p>
-                <p><strong>SHA:</strong> <%= post.commitInfo.sha %></p>
-                <p><strong>URL:</strong> <a href="<%= post.commitInfo.url %>"><%= post.commitInfo.url %></a></p>
-                <p><strong>Additions:</strong> <%= post.commitInfo.additions %></p>
-                <p><strong>Deletions:</strong> <%= post.commitInfo.deletions %></p>
-
-                <!-- Grafiekweergave voor bestandenwijzigingen -->
-                <div>
-                  <canvas id="fileChangesChart-<%= index %>" width="400" height="200"></canvas>
-                </div>
-
-                <% if (post.filesChanged) { %>
-                  <script>
-                    const fileLabels<%= index %> = <%- JSON.stringify(post.filesChanged.map(file => file.filename)) %>;
-                    const additionsData<%= index %> = <%- JSON.stringify(post.filesChanged.map(file => file.additions)) %>;
-                    const deletionsData<%= index %> = <%- JSON.stringify(post.filesChanged.map(file => file.deletions)) %>;
-                
-                    const ctx<%= index %> = document.getElementById('fileChangesChart-<%= index %>').getContext('2d');
-                    new Chart(ctx<%= index %>, {
-                        type: 'bar',
-                        data: {
-                            labels: fileLabels<%= index %>,
-                            datasets: [
-                                {
-                                    label: 'Toevoegingen',
-                                    data: additionsData<%= index %>,
-                                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                                    borderColor: 'rgba(75, 192, 192, 1)',
-                                    borderWidth: 1
-                                },
-                                {
-                                    label: 'Verwijderingen',
-                                    data: deletionsData<%= index %>,
-                                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
-                                    borderColor: 'rgba(255, 99, 132, 1)',
-                                    borderWidth: 1
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            }
-                        }
-                    });
-                  </script>
-                <% } %>
-                
-                <% if (post.commitInfo.files && post.commitInfo.files.length > 0) { %>
-                    <p><strong>Files Changed:</strong></p>
-                    <ul>
-                      <% post.commitInfo.files.forEach(file => { %>
-                        <li>
-                          <p><strong>Filename:</strong> <%= file.filename %></p>
-                          <p> Additions: <%= file.additions %>, Deletions: <%= file.deletions %>, Changes: <%= file.changes %>, Status: <%= file.status %> </p>
-                        </li>
-                      <% }); %>
-                    </ul>
-                <% } %>
-            <% } %>
-            <p><small>Gepost op: <%= post.createdAt.toDateString() %></small></p>
-
-            <!-- Like button form -->
-            <form action="/feed/<%= post._id %>/like" method="POST">
-                <button type="submit" class="like-button">
-                    Like (<%= post.likes ? post.likes.length : 0 %>)
-                </button>
-            </form>
-
-            <!-- Comments sectie -->
-            <div class="comment-section">
-                <h4>Comments:</h4>
-                <% if (post.comments && post.comments.length > 0) { %>
-                    <% post.comments.forEach(function(comment) { %>
-                        <div class="comment">
-                            <p class="comment-author"><%= comment.author %>:</p>
-                            <p class="comment-content"><%= comment.content %></p>
-                        </div>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Formulier om een nieuwe post te maken -->
+        <div class="profile-info">
+            <form action="/feed/new" method="POST">
+                <textarea name="content" placeholder="Wat heb je gedaan vandaag met je project?" required></textarea>
+                <select name="repository" id="repository" onchange="fetchCommits(this.value)">
+                    <option value="">Selecteer een repository (optioneel)</option>
+                    <% repositories.forEach(function(repo) { %>
+                        <option value="<%= repo.full_name %>"><%= repo.name %></option>
                     <% }); %>
-                <% } %>
-                <form action="/feed/<%= post._id %>/comment" method="POST" class="comment-form">
-                    <textarea name="content" placeholder="Schrijf een reactie..." required></textarea>
-                    <button type="submit">Comment</button>
-                </form>
-            </div>
+                </select>
+                <select name="commitInfo" id="commitInfo">
+                    <option value="">Selecteer een commit (optioneel)</option>
+                </select>
+                <input type="text" name="imageUrl" placeholder="URL van afbeelding (optioneel)">
+                <button type="submit">Post!</button>
+            </form>
         </div>
-    <% } %>
-  </div>
 
+        <!-- Weergeven van posts -->  
+        <div class="profile-info">
+            <% posts.forEach((post, index) => { %>
+                <div class="post">
+                    <h3>Gepost door: <%= post.author.login %></h3>
+                    <p><%= post.content %></p>
+                    <% if (post.commitInfo) { %>
+                        <p><strong>Commit Message:</strong> <%= post.commitInfo.message %></p>
+                        <p><strong>Author:</strong> <%= post.commitInfo.author %></p>
 
-  <!-- Footer -->
-  <footer>
-      <div class="footer-container">
-          <p>© 2024 DevPulse. All rights reserved.</p>
-      </div>
-  </footer>
+                        <!-- Diagram direct tonen -->
+                        <div>
+                            <canvas id="fileChangesChart-<%= index %>" width="400" height="200"></canvas>
+                        </div>
+
+                        <!-- Dropdown voor Additions en Deletions -->
+                        <button onclick="toggleDropdown('changes-<%= index %>')">Wijzigingen</button>
+                        <div id="changes-<%= index %>" class="dropdown-content" style="display: none;">
+                            <p>Additions: <%= post.commitInfo.additions %></p>
+                            <p>Deletions: <%= post.commitInfo.deletions %></p>
+                        </div>
+
+                        <!-- Dropdown voor bestanden die zijn gewijzigd -->
+                        <button onclick="toggleDropdown('files-<%= index %>')">Bestanden gewijzigd</button>
+                        <div id="files-<%= index %>" class="dropdown-content" style="display: none;">
+                            <% post.commitInfo.files.forEach(file => { %>
+                                <p><strong>Bestand:</strong> <%= file.filename %> (Additions: <%= file.additions %>, Deletions: <%= file.deletions %>)</p>
+                            <% }); %>
+                        </div>
+
+                        <!-- Grafiekscript voor bestandwijzigingen -->
+                        <script>
+                            const fileLabels<%= index %> = <%- JSON.stringify(post.commitInfo.files.map(file => file.filename)) %>;
+                            const additionsData<%= index %> = <%- JSON.stringify(post.commitInfo.files.map(file => file.additions)) %>;
+                            const deletionsData<%= index %> = <%- JSON.stringify(post.commitInfo.files.map(file => file.deletions)) %>;
+
+                            const ctx<%= index %> = document.getElementById('fileChangesChart-<%= index %>').getContext('2d');
+                            new Chart(ctx<%= index %>, {
+                                type: 'bar',
+                                data: {
+                                    labels: fileLabels<%= index %>,
+                                    datasets: [
+                                        {
+                                            label: 'Toevoegingen',
+                                            data: additionsData<%= index %>,
+                                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                                            borderColor: 'rgba(75, 192, 192, 1)',
+                                            borderWidth: 1
+                                        },
+                                        {
+                                            label: 'Verwijderingen',
+                                            data: deletionsData<%= index %>,
+                                            backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                                            borderColor: 'rgba(255, 99, 132, 1)',
+                                            borderWidth: 1
+                                        }
+                                    ]
+                                },
+                                options: {
+                                    responsive: true,
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        </script>
+                    <% } %>
+                    <p><small>Gepost op: <%= post.createdAt.toDateString() %></small></p>
+
+                    <!-- Like button form -->
+                    <form action="/feed/<%= post._id %>/like" method="POST">
+                        <button type="submit" class="like-button">Like (<%= post.likes ? post.likes.length : 0 %>)</button>
+                    </form>
+
+                    <!-- Comments sectie -->
+                    <div class="comment-section">
+                        <h4>Comments:</h4>
+                        <% if (post.comments && post.comments.length > 0) { %>
+                            <% post.comments.forEach(comment => { %>
+                                <div class="comment">
+                                    <p class="comment-author"><%= comment.author.login %>:</p>
+                                    <p class="comment-content"><%= comment.content %></p>
+                                </div>
+                            <% }); %>
+                        <% } %>
+                        <form action="/feed/<%= post._id %>/comment" method="POST" class="comment-form">
+                            <textarea name="content" placeholder="Schrijf een reactie..." required></textarea>
+                            <button type="submit">Comment</button>
+                        </form>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <p>© 2024 DevPulse. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>
