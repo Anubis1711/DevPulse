@@ -82,7 +82,7 @@ router.get('/', isAuthenticated, async (req, res) => {
         } else {
           console.error("Fout bij het ophalen van commits:", err.message);
         }
-      }
+      }  
     }
 
     // Update database alleen als er nieuwe gegevens zijn
