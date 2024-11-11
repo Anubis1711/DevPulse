@@ -1,52 +1,8 @@
-app.get('/profile', async (req, res) => {
-  if (!req.session.accessToken) {
-    return res.redirect('/');
-  }
+Vereisten:
 
-  try {
-    // Stel de GraphQL-query op
-    const query = `
-      query {
-        viewer {
-          login
-          name
-          avatarUrl
-          bio
-          url
-          publicRepos: repositories(isFork: false, privacy: PUBLIC) {
-            totalCount
-          }
-          followers {
-            totalCount
-          }
-          following {
-            totalCount
-          }
-        }
-      }
-    `;
+Node.js en npm (of Yarn) – voor packagebeheer en het draaien van de server.
+MongoDB – als database voor opslag van gebruikers, posts, en statistieken.
+Express – voor het opzetten van de server.
+Axios – om HTTP-verzoeken te maken naar de GitHub API voor commit-informatie.
 
-    // Maak een POST-aanroep naar de GitHub GraphQL API
-    const response = await axios.post(
-      'https://api.github.com/graphql',
-      { query },
-      {
-        headers: {
-          Authorization: `Bearer ${req.session.accessToken}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    
-
-    // Haal gebruikersgegevens uit de response
-    const userData = response.data.data.viewer;
-
-    // Render de profielpagina met de gebruikersgegevens
-    res.render('profile', { user: userData });
-  } catch (error) {
-    console.error("Error bij het ophalen van gebruikersgegevens met GraphQL:", error.message);
-    res.status(500).send("Er ging iets mis bij het ophalen van gebruikersgegevens.");
-  }
-});
+Er zit nog aardig wat debug code in het project die er eigenlijk uit zou moeten. Vanwege tijdsdruk is het me helaas niet gelukt om dit allemaal netjes op te schonen. Je zult hier en daar dus nog console.logs en testopdrachten tegenkomen die ik normaal gesproken zou verwijderen. Deze code heeft geholpen bij het testen en debuggen tijdens het bouwen, maar voor een uiteindelijke versie zou dit er uiteraard uit gehaald moeten worden om de code wat schoner en efficiënter te maken. Sorry.
