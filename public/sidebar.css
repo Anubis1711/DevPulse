@@ -130,4 +130,17 @@ footer {
     opacity: 1;
 }
 
+/* Hide the toggle button on larger screens */
+.sidebar-toggle {
+    display: none; /* Hidden by default */
+}
+
+/* Show the toggle button on smaller screens */
+@media (max-width: 768px) {
+    .sidebar-toggle {
+        display: block; /* Visible in mobile view */
+    }
+}
+
+
 
