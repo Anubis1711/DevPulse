@@ -150,3 +150,37 @@ button:hover {
         display: none;
     }
 }
+
+/* Sidebar toggle button */
+.sidebar-toggle {
+    display: none; /* Hidden by default for larger screens */
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    z-index: 1100;
+    cursor: pointer;
+}
+
+/* Menu icon styling */
+.menu-icon {
+    width: 30px;
+    height: 30px;
+    display: block;
+}
+
+/* Show the toggle button for smaller screens */
+@media (max-width: 768px) {
+    .sidebar-toggle {
+        display: block;
+    }
+}
+
+/* Optional hover effect for the menu icon */
+.sidebar-toggle:hover .menu-icon {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+

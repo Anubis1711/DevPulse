@@ -51,6 +51,18 @@
         </ul>
     </div>
 
+    <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <img src="/icons/icons8-menu-128.png" alt="Menu" class="menu-icon">
+    </button>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('open');
+        }
+    </script>    
+    
+
     <!-- Main Content -->
     <div class="main-content">
         <!-- Formulier om een nieuwe post te maken -->
