@@ -1,5 +1,6 @@
 /* Sidebar Styling */
 .sidebar {
+    z-index: 1000;
     width: 250px;
     background-color: #24292e;
     color: #ffffff;
@@ -63,3 +64,70 @@ footer {
     width: 100%;
     left: 0;
 }
+
+/* Sidebar default hidden for small screens */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        display: block; /* Ensure it's available for toggling */
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+}
+
+/* Improve the toggle button styling */
+.sidebar-toggle {
+    display: block;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    background-color: transparent;
+    color: white;
+    font-size: 20px;
+    border: none;
+    border-radius: 50%; /* Circular button */
+    cursor: pointer;
+    z-index: 1100;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.menu-icon {
+    width: 30px; /* Adjust the size as needed */
+    height: 30px;
+    display: block;
+}
+
+.sidebar-toggle:hover .menu-icon {
+    transform: scale(1.1); /* Slight zoom on hover */
+    transition: transform 0.3s ease;
+}
+
+/* Align with other header elements */
+@media (max-width: 768px) {
+    .profile-header {
+        position: relative;
+        padding-left: 60px; /* Space for the button */
+    }
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent */
+    z-index: 900; /* Below sidebar but above content */
+    transition: opacity 0.3s ease;
+}
+
+.sidebar.open ~ .sidebar-overlay {
+    display: block;
+    opacity: 1;
+}
+
+

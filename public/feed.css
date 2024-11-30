@@ -138,3 +138,15 @@ button:hover {
     background-color: #555555; /* Iets donkerdere kleur bij hover */
     transform: translateY(-2px);
 }
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 15px;
+    }
+
+    .sidebar {
+        display: none;
+    }
+}
