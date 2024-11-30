@@ -22,6 +22,22 @@
         </ul>
     </div>
 
+    <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <img src="/icons/icons8-menu-128.png" alt="Menu" class="menu-icon">
+    </button>
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('open');
+        }
+    </script>    
+
     <!-- Main Content -->
     <div class="main-content">
         <!-- Profiel Header -->
