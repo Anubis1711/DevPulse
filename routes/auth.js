@@ -86,13 +86,25 @@ router.get('/github/callback', async (req, res) => {
     }
 });
 
-function isAuthenticated(req, res, next) {
-    console.log("isAuthenticated sessie check:", req.session);
-    if (req.session && req.session.accessToken) {
-        return next();
-    } else {
-        return res.redirect('/'); // Redirect naar home wanneer inloggen niet lukt
-    }
+async function isAuthenticated(req, res, next) {
+  console.log("isAuthenticated sessie check:", req.session);
+  if (req.session && req.session.accessToken) {
+      try {
+          const user = await User.findOne({ login: req.session.userLogin });
+          if (user) {
+              req.user = user; // Voeg de ingelogde gebruiker toe aan req.user
+              return next();
+          } else {
+              console.error("Gebruiker niet gevonden.");
+              return res.redirect('/');
+          }
+      } catch (error) {
+          console.error("Fout bij authenticatie:", error.message);
+          return res.status(500).send("Er ging iets mis.");
+      }
+  } else {
+      return res.redirect('/'); // Redirect naar home als sessie ontbreekt
+  }
 }
 
 module.exports = isAuthenticated;

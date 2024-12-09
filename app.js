@@ -33,6 +33,7 @@ const profileRoutes = require('./routes/profile');
 const logoutRoutes = require('./routes/log-out');
 const feedRoutes = require('./routes/feed');
 const commitRoutes = require('./routes/commits')
+const followRoutes = require('./routes/follow')
 
 
 // Gebruik de routes
@@ -41,6 +42,7 @@ app.use('/profile', profileRoutes);
 app.use('/', logoutRoutes);
 app.use('/feed', feedRoutes);
 app.use('/commits', commitRoutes);
+app.use('/follow', followRoutes);
 
 
 

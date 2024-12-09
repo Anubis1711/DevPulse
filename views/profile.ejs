@@ -58,8 +58,16 @@
                 <button type="submit">Update Beschrijving</button>
             </form>
             <div class="profile-stats">
-                <p><strong>Volgers:</strong> <%= user.followers %></p>
-                <p><strong>Volgend:</strong> 150</p>
+                <h3>Volgers</h3>
+                    <% if (profileUser && profileUser.followers.length > 0) { %>
+                        <ul>
+                            <% profileUser.followers.forEach(follower => { %>
+                                <li><%= follower.name || follower.username %></li>
+                            <% }); %>
+                        </ul>
+                    <% } else { %>
+                        <p>Geen volgers gevonden.</p>
+                    <% } %>
             </div>
         </div>
 
@@ -77,6 +85,8 @@
             </div>
         </div>
     </div>
+
+
 
     <footer>
         <p>© 2024 DevPulse. All rights reserved.</p>
