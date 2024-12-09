@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  githubId: { type: String, required: true, unique: true },  // GitHub ID voor uniekheid
-  login: String,
+  username: { type: String, required: true, unique: true },
   name: String,
+  githubId: String,
   avatarUrl: String,
   bio: String,
-  followers: { type: Number, default: 0 },
-  description: { type: String, default: "Hier kan je je beschrijving aanpassen" }
+  description: String,
+  followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], // Array van ObjectId's
+  following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]  // Array van ObjectId's
 });
 
 const User = mongoose.model('User', userSchema);
