@@ -34,6 +34,7 @@ const logoutRoutes = require('./routes/log-out');
 const feedRoutes = require('./routes/feed');
 const commitRoutes = require('./routes/commits')
 const followRoutes = require('./routes/follow')
+const comparisonRoutes = require('./routes/comparison');
 
 
 // Gebruik de routes
@@ -43,6 +44,7 @@ app.use('/', logoutRoutes);
 app.use('/feed', feedRoutes);
 app.use('/commits', commitRoutes);
 app.use('/follow', followRoutes);
+app.use('/comparison', comparisonRoutes);
 
 
 

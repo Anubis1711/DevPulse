@@ -19,6 +19,7 @@
             <li><a href="/profile">Profile</a></li>
             <li><a href="/feed">Feed</a></li>
             <li><a href="/logout">Log out</a></li>
+            <li><a href="/comparison">side-by-side comparison</a></li>
         </ul>
     </div>
 
@@ -59,17 +60,11 @@
             </form>
             <div class="profile-stats">
                 <h3>Volgers</h3>
-                    <% if (profileUser && profileUser.followers.length > 0) { %>
-                        <ul>
-                            <% profileUser.followers.forEach(follower => { %>
-                                <li><%= follower.name || follower.username %></li>
-                            <% }); %>
-                        </ul>
-                    <% } else { %>
-                        <p>Geen volgers gevonden.</p>
-                    <% } %>
+                    
             </div>
         </div>
+
+
 
         <!-- Commit Overzicht -->
         <div class="commit-overview">

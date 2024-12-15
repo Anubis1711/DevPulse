@@ -8,7 +8,7 @@ Axios – om HTTP-verzoeken te maken naar de GitHub API voor commit-informatie.
 Er zit nog aardig wat debug code in het project die er eigenlijk uit zou moeten. Vanwege tijdsdruk is het me helaas niet gelukt om dit allemaal netjes op te schonen. Je zult hier en daar dus nog console.logs en testopdrachten tegenkomen die ik normaal gesproken zou verwijderen. Deze code heeft geholpen bij het testen en debuggen tijdens het bouwen, maar voor een uiteindelijke versie zou dit er uiteraard uit gehaald moeten worden om de code wat schoner en efficiënter te maken. Sorry.
 
 
-    <!--<% if (typeof currentUser !== 'undefined' && currentUser._id.toString() !== profileUser._id.toString()) { %>
+            <!--<% if (typeof currentUser !== 'undefined' && currentUser._id.toString() !== profileUser._id.toString()) { %>
         <div>
             <% if (currentUser.following.includes(profileUser._id)) { %>
                 <form action="/unfollow/<%= profileUser._id %>" method="POST">
@@ -21,3 +21,20 @@ Er zit nog aardig wat debug code in het project die er eigenlijk uit zou moeten.
             <% } %>
         </div>
     <% } %>-->
+
+    <!--<% if (profileUser && profileUser.followers.length > 0) { %>
+                        <ul>
+                            <% profileUser.followers.forEach(follower => { %>
+                                <li><%= follower.name || follower.username %></li>
+                            <% }); %>
+                        </ul>
+                    <% } else { %>
+                        <p>Geen volgers gevonden.</p>
+                    <% } %>-->
+
+
+Demodata erin zetten voor followers etc. 
+
+alvast statische vergelijking maken. 
+
+migrations bestuderen mongoDB. 

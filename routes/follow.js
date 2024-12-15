@@ -46,6 +46,7 @@ router.post('/:id/follow', isAuthenticated, async (req, res) => {
 
             return res.status(200).send({ message: 'Gebruiker gevolgd', user: userToFollow });
         }
+        // volgmelding
 
         res.status(400).send({ message: 'Gebruiker wordt al gevolgd' });
     } catch (error) {
