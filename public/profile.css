@@ -194,4 +194,10 @@ footer {
     }
 }
 
+@media (max-width: 768px) {
+    .sidebar-toggle {
+        display: block; /* Toon de toggle-knop alleen op kleinere schermen */
+    }
+}
+
 
