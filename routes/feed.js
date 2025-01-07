@@ -46,7 +46,7 @@ router.get('/', isAuthenticated, async (req, res) => {
     }
 
     // Render de feed met de beschikbare posts en repositories
-    res.render('feed', { user: req.session.userLogin, posts, repositories });
+    res.render('feed', { user: req.session.userLogin, posts, repositories, users: [] });
   } catch (error) {
     console.error("Error bij het ophalen van de berichten:", error);
     res.status(500).send("Er ging iets mis bij het ophalen van de berichten.");
@@ -186,5 +186,25 @@ router.post('/:postId/comment', isAuthenticated, async (req, res) => {
     res.status(500).send("Er ging iets mis bij het toevoegen van de comment.");
   }
 });
+
+router.get('/search', isAuthenticated, async (req, res) => {
+  const query = req.query.q; // De zoekterm uit de query string
+  try {
+      const users = await User.find({
+          $or: [
+              { name: new RegExp(query, 'i') },
+              { login: new RegExp(query, 'i') }
+          ]
+      });
+
+      const repositories = [];
+      
+      res.render('feed', { users, posts: [], repositories}); // Stuur zoekresultaten mee
+  } catch (error) {
+      console.error("Fout bij het zoeken:", error.message);
+      res.status(500).send("Zoeken mislukt.");
+  }
+});
+
 
 module.exports = router;
