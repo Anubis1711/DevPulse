@@ -38,3 +38,10 @@ Demodata erin zetten voor followers etc.
 alvast statische vergelijking maken. 
 
 migrations bestuderen mongoDB. 
+
+Sprint 3:
+Vergelijking meer in tabelstructuur. (check)!!
+Wat creatiever zijn (icoontjes), datum bij meeste commits per dag.
+Zoekknop weg, automatisch zoeken na een aantal tekens.
+notification, gamification (challenges, achievements, eentje kiezen om uit te werken)
+side-by-side koppelen aan zoekactie/ zoeken van profiel mooi maken (pfp, naam, sidebyside, een mooie display)

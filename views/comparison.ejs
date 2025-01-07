@@ -5,100 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Side-by-Side Comparison</title>
     <link rel="stylesheet" href="/shared.css">
-    <style>
-        .comparison-container {
-            display: flex;
-            justify-content: space-around;
-            margin: 20px auto;
-            padding: 20px;
-            max-width: 1200px;
-            background-color: #f4f4f4;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .comparison-item {
-            flex: 1;
-            margin: 0 10px;
-            background-color: #ffffff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        .comparison-item img {
-            border-radius: 50%;
-            width: 100px;
-            height: 100px;
-            margin-bottom: 10px;
-        }
-
-        .comparison-item h3 {
-            font-size: 1.5rem;
-            margin: 10px 0;
-        }
-
-        .comparison-item p {
-            color: #555;
-            margin-bottom: 10px;
-        }
-
-        .comparison-item ul {
-            list-style: none;
-            padding: 0;
-            text-align: left;
-        }
-
-        .comparison-item ul li {
-            margin: 5px 0;
-            font-size: 1rem;
-        }
-    </style>
+    <link rel="stylesheet" href="/comparison.css">
 </head>
 <body>
     <div class="comparison-container">
-        <!-- User 1 -->
-        <div class="comparison-item">
-            <img src="/icons/user1-avatar.png" alt="User 1 Avatar">
-            <h3>User 1</h3>
-            <p>@user1</p>
-            <ul>
-                <li><strong>Commits deze week:</strong> 35</li>
-                <li><strong>Repositories:</strong> 12</li>
-                <li><strong>Volgers:</strong> 150</li>
-                <li><strong>Volgt:</strong> 90</li>
-                <li><strong>Hoogste streak:</strong> 15 dagen</li>
-                <li><strong>Meest gebruikte taal:</strong> JavaScript</li>
-                <li><strong>Aantal posts:</strong> 20</li>
-                <li><strong>Meeste commits (1 dag):</strong> 12</li>
-                <li><strong>Achievements:</strong> 8</li>
-            </ul>
-        </div>
-
-        <!-- Divider -->
-        <div class="comparison-divider">
-            <h2>VS</h2>
-        </div>
-
-        <!-- User 2 -->
-        <div class="comparison-item">
-            <img src="/icons/user2-avatar.png" alt="User 2 Avatar">
-            <h3>User 2</h3>
-            <p>@user2</p>
-            <ul>
-                <li><strong>Commits deze week:</strong> 20</li>
-                <li><strong>Repositories:</strong> 8</li>
-                <li><strong>Volgers:</strong> 200</li>
-                <li><strong>Volgt:</strong> 120</li>
-                <li><strong>Hoogste streak:</strong> 10 dagen</li>
-                <li><strong>Meest gebruikte taal:</strong> Python</li>
-                <li><strong>Aantal posts:</strong> 15</li>
-                <li><strong>Meeste commits (1 dag):</strong> 9</li>
-                <li><strong>Achievements:</strong> 5</li>
-            </ul>
-        </div>
+    <!-- Gebruiker 1 -->
+    <div class="user-card">
+        <img src="/icons/user1-avatar.png" alt="User 1 Avatar" class="avatar">
+        <h3>User 1</h3>
+        <p>@user1</p>
+        <table>
+            <thead>
+                <tr><th colspan="2">Statistieken</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Commits deze week</td><td>35</td></tr>
+                <tr><td>Repositories</td><td>12</td></tr>
+                <tr><td>Volgers</td><td>150</td></tr>
+                <tr><td>Volgt</td><td>90</td></tr>
+                <tr><td>Hoogste streak</td><td>15 dagen</td></tr>
+                <tr><td>Meest gebruikte taal</td><td>JavaScript</td></tr>
+            </tbody>
+            <thead>
+                <tr><th colspan="2">Activiteit</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Aantal posts</td><td>20</td></tr>
+                <tr><td>Meeste commits (1 dag)</td><td>12</td></tr>
+                <tr><td>Achievements</td><td>8</td></tr>
+            </tbody>
+        </table>
     </div>
+
+    <div class="vs">VS</div>
+
+    <!-- Gebruiker 2 -->
+    <div class="user-card">
+        <img src="/icons/user2-avatar.png" alt="User 2 Avatar" class="avatar">
+        <h3>User 2</h3>
+        <p>@user2</p>
+        <table>
+            <thead>
+                <tr><th colspan="2">Statistieken</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Commits deze week</td><td>20</td></tr>
+                <tr><td>Repositories</td><td>8</td></tr>
+                <tr><td>Volgers</td><td>200</td></tr>
+                <tr><td>Volgt</td><td>120</td></tr>
+                <tr><td>Hoogste streak</td><td>10 dagen</td></tr>
+                <tr><td>Meest gebruikte taal</td><td>Python</td></tr>
+            </tbody>
+            <thead>
+                <tr><th colspan="2">Activiteit</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Aantal posts</td><td>15</td></tr>
+                <tr><td>Meeste commits (1 dag)</td><td>9</td></tr>
+                <tr><td>Achievements</td><td>5</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 </body>
 </html>

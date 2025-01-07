@@ -152,6 +152,46 @@ button:hover {
     transform: translateY(-2px);
 }
 
+.center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Horizontaal centreren */
+    justify-content: center; /* Verticaal centreren als nodig */
+    margin: 20px auto; /* Automatische marges voor extra centrering */
+    text-align: center;
+}
+
+.center-container form,
+.center-container button {
+    margin-bottom: 15px; /* Ruimte tussen zoekbalk en knop */
+}
+
+
+.search-bar input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 250px;
+    margin-right: 5px;
+}
+
+.search-bar button,
+.post-toggle-button {
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Courier Prime', monospace;
+    transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover,
+.post-toggle-button:hover {
+    background-color: #e65a50;
+}
+
 @media (max-width: 768px) {
     .main-content {
         margin-left: 0;
