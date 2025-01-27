@@ -16,7 +16,10 @@ const demoUsers = [
     bio: "Passionate full-stack developer",
     description: "Love coding in JavaScript and building cool projects.",
     followers: [],
-    following: []
+    following: [],
+    mostUsedLanguage: 'JavaScript',
+    commitsThisYear: 150,
+    createdAt: '2021-04-12'
   },
   {
     username: "JaneS",
@@ -27,7 +30,10 @@ const demoUsers = [
     bio: "Backend engineer with love for Python.",
     description: "Building APIs and automating workflows.",
     followers: [],
-    following: []
+    following: [],
+    mostUsedLanguage: 'Python',
+    commitsThisYear: 196,
+    createdAt: '2018-05-19'
   },
   {
     username: "SAM03",
@@ -38,7 +44,10 @@ const demoUsers = [
     bio: "Frontend developer mastering React.",
     description: "Focusing on clean, responsive UI design.",
     followers: [],
-    following: []
+    following: [],
+    mostUsedLanguage: 'JavaScript',
+    commitsThisYear: 218,
+    createdAt: '2020-02-08'
   }
 ];
 
