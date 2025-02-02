@@ -19,12 +19,21 @@ Zoekknop weg, automatisch zoeken na een aantal tekens.
 
 Sprint 4:
 notification, gamification (combinatie)(challenges, achievements, eentje kiezen om uit te werken) // nice to have
-side-by-side koppelen aan zoekactie/ zoeken van profiel mooi maken (pfp, naam, sidebyside, een mooie display)/ user implementation, management. 
+side-by-side koppelen
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ aan zoekactie/ zoeken van profiel mooi maken (pfp, naam, sidebyside, een mooie display)/ user implementation, management. 
 Wat creatiever zijn (icoontjes), datum bij meeste commits per dag.
 ngrock
-
-Voor einddemo:
-challenge zou leuk zijn
-portfolio: onderzoek er goed in laten. 
-mobile first checken/ media queries checken.
-github 1 commit terug halen. en .env bestand checken.

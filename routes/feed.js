@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../models/post');
 const User = require('../models/user');
-const isAuthenticated = require('./auth');
+const isAuthenticated = require('../routes/auth');
 const axios = require('axios');
 
 // GET route voor de feed
@@ -12,7 +12,7 @@ router.get('/', isAuthenticated, async (req, res) => {
     const repositories = req.session.repositories || [];
 
     // Haal alle posts op uit de database
-    const posts = await Post.find().populate('author').sort({ createdAt: -1 });
+    const posts = await Post.find().populate('comments.author').sort({ createdAt: -1 });
 
     // Voeg commit details toe aan elke post en verwijder SHA en URL
     for (let post of posts) {
@@ -158,8 +158,11 @@ router.post('/:postId/like', isAuthenticated, async (req, res) => {
 
 // POST route om een comment toe te voegen aan een post
 router.post('/:postId/comment', isAuthenticated, async (req, res) => {
+  console.log("Ontvangen request body:", req.body); // 🔥 Debugging log
   const { postId } = req.params;
   const { content } = req.body;
+
+  console.log("Ontvangen request body:", req.body); // 🔥 Log de body om te checken of `content` aanwezig is
 
   try {
     const post = await Post.findById(postId);

@@ -38,6 +38,8 @@ router.get('/github/callback', async (req, res) => {
       });
   
       const { id, login, name, avatar_url, bio } = userResponse.data;
+
+      const username = login || `user_${id}`;
   
       // Zoek de gebruiker op of maak een nieuwe aan
       let user = await User.findOne({ githubId: id });
@@ -45,6 +47,7 @@ router.get('/github/callback', async (req, res) => {
         user = new User({
           githubId: id,
           login,
+          username: username,
           name,
           avatarUrl: avatar_url,
           bio
@@ -107,6 +110,6 @@ async function isAuthenticated(req, res, next) {
   }
 }
 
-module.exports = isAuthenticated;
+module.exports = router, isAuthenticated
 
-module.exports = router;
+

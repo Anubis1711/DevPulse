@@ -192,6 +192,91 @@ button:hover {
     background-color: #e65a50;
 }
 
+.search-result {
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .search-result h3 {
+    margin: 0;
+    font-size: 1.2em;
+  }
+  
+  .search-result p {
+    margin: 5px 0 0;
+    font-size: 1em;
+  }
+  
+  .dropdown {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    margin-top: 5px;
+    display: none; /* Verborgen tot er resultaten zijn */
+}
+
+.dropdown .dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.dropdown .dropdown-item:hover {
+    background-color: #f4f4f4;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.dropdown-item img {
+    width: 40px;  /* Verkleind naar 40px */
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.dropdown-item:hover {
+    background-color: #f4f4f4;
+}
+
+.like-form, .comment-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.comment-form input {
+    flex: 1;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.comment-section {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #3a3a3a;
+    border-radius: 8px;
+    color: #ffffff;
+}
+
+
+
 @media (max-width: 768px) {
     .main-content {
         margin-left: 0;
