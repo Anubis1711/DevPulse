@@ -12,15 +12,13 @@ router.get('/', isAuthenticated, async (req, res) => {
     const repositories = req.session.repositories || [];
 
     // Haal alle posts op uit de database
-    const posts = await Post.find().populate('comments.author').sort({ createdAt: -1 });
+    const posts = await Post.find().populate('author').populate('comments.author').sort({ createdAt: -1 });
 
     // Voeg commit details toe aan elke post en verwijder SHA en URL
     for (let post of posts) {
       if (post.commitInfo && post.commitInfo.sha) {
         const { sha, url } = post.commitInfo;
         const repoFullName = url.split('/').slice(-4, -2).join('/'); // Haal repo naam op uit URL
-
-        console.log("Fetching commit details for:", repoFullName, sha);
     
         try {
           // Haal details op over de commit
@@ -74,7 +72,6 @@ router.post('/new', isAuthenticated, async (req, res) => {
 
       const url = `https://api.github.com/repos/${repoFullName}/commits/${commitSha}`;
       try {
-        console.log("Fetching commit details:", { repoFullName, commitSha });
 
         const commitResponse = await axios.get(url, {
           headers: { Authorization: `Bearer ${accessToken}` }
@@ -158,11 +155,8 @@ router.post('/:postId/like', isAuthenticated, async (req, res) => {
 
 // POST route om een comment toe te voegen aan een post
 router.post('/:postId/comment', isAuthenticated, async (req, res) => {
-  console.log("Ontvangen request body:", req.body); // 🔥 Debugging log
   const { postId } = req.params;
   const { content } = req.body;
-
-  console.log("Ontvangen request body:", req.body); // 🔥 Log de body om te checken of `content` aanwezig is
 
   try {
     const post = await Post.findById(postId);

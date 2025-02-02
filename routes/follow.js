@@ -14,10 +14,6 @@ router.get('/', isAuthenticated, async (req, res) => {
         const profileUser = user; // Dit is de gebruiker wiens profiel wordt bekeken
         const currentUser = req.user; // De ingelogde gebruiker
 
-        // Debug-logging
-        console.log("profileUser:", profileUser);
-        console.log("currentUser:", currentUser);
-
         // Render de profielpagina
         res.render('profile', { profileUser, currentUser });
     } catch (error) {

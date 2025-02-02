@@ -6,9 +6,7 @@ const router = express.Router();
 const getValueOrFallback = (value, fallback = '-') => (value ? value : fallback);
 
 router.get('/', async (req, res) => {
-    const { selectedUser } = req.query;
-
-    console.log("Zoek naar gebruiker:", selectedUser);
+    const { selectedUser } = req.query;;
 
     if (!req.session || !req.session.userLogin) {
         return res.redirect('/login');

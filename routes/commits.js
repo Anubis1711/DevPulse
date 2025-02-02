@@ -21,7 +21,6 @@ router.get('/', isAuthenticated, async (req, res) => {
 
     // API-aanroep naar GitHub om commits op te halen van de opgegeven repository
     const url = `https://api.github.com/repos/${repo}/commits`;
-    console.log("Fetching commits for repository:", repo);
 
     const commitsResponse = await axios.get(url, {
       headers: {
@@ -52,7 +51,6 @@ router.get('/:repoFullName/:commitSha', isAuthenticated, async (req, res) => {
 
     // API-aanroep naar GitHub om een specifieke commit op te halen
     const url = `https://api.github.com/repos/${repoFullName}/commits/${commitSha}`;
-    console.log("Fetching commit:", { repoFullName, commitSha });
 
     const commitResponse = await axios.get(url, {
       headers: {
