@@ -9,69 +9,63 @@
 </head>
 <body>
     <div class="comparison-container">
-        <!-- Gebruiker 1 -->
-        <div class="user-column">
-            <div class="user-card">
-                <img src="<%= currentUser.avatarUrl %>" class="avatar">
-                <h3><%= currentUser.name || 'Geen naam' %></h3>
-                <p class="username">@<%= currentUser.login || '-' %></p>
-            </div>
-            <div class="stats">
-                <div class="stat-item">
-                    <span>Repositories</span>
-                    <strong><%= currentUser.repoCount || '-' %></strong>
-                </div>
-                <div class="stat-item">
-                    <span>Volgers</span>
-                    <strong><%= currentUser.followers || '-' %></strong>
-                </div>
-                <div class="stat-item">
-                    <span>Meest gebruikte taal</span>
-                    <strong><%= currentUser.mostUsedLanguage || 'Onbekend' %></strong>
-                </div>
-                <div class="stat-item">
-                    <span>Commits dit jaar</span>
-                    <strong><%= currentUser.commitsThisYear || '0' %></strong>
-                </div>
-                <div class="stat-item">
-                    <span>Lid sinds</span>
-                    <strong><%= currentUser.createdAt || '-' %></strong>
-                </div>
-            </div>
-        </div>
-
-        <div class="vs">VS</div>
-
-        <!-- Gebruiker 2 -->
-        <div class="user-column">
-            <div class="user-card">
-                <img src="<%= selectedUser.avatarUrl %>" class="avatar">
-                <h3><%= selectedUser.name || 'Geen naam' %></h3>
-                <p class="username">@<%= selectedUser.login || '-' %></p>
-            </div>
-            <div class="stats">
-                <div class="stat-item">
-                    <span>Repositories</span>
-                    <strong><%= selectedUser.repoCount || '-' %></strong>
-                </div>
-                <div class="stat-item">
-                    <span>Volgers</span>
-                    <strong><%= selectedUser.followers || '-' %></strong>
-                </div>
-                <div class="stat-item">
-                    <span>Meest gebruikte taal</span>
-                    <strong><%= selectedUser.mostUsedLanguage || 'Onbekend' %></strong>
-                </div>
-                <div class="stat-item">
-                    <span>Commits dit jaar</span>
-                    <strong><%= selectedUser.commitsThisYear || '0' %></strong>
-                </div>
-                <div class="stat-item">
-                    <span>Lid sinds</span>
-                    <strong><%= selectedUser.createdAt || '-' %></strong>
-                </div>
-            </div>
-        </div>
+    <!-- Gebruiker 1 -->
+    <div class="user-card">
+        <img src="/icons/user1-avatar.png" alt="User 1 Avatar" class="avatar">
+        <h3>User 1</h3>
+        <p>@user1</p>
+        <table>
+            <thead>
+                <tr><th colspan="2">Statistieken</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Commits deze week</td><td>35</td></tr>
+                <tr><td>Repositories</td><td>12</td></tr>
+                <tr><td>Volgers</td><td>150</td></tr>
+                <tr><td>Volgt</td><td>90</td></tr>
+                <tr><td>Hoogste streak</td><td>15 dagen</td></tr>
+                <tr><td>Meest gebruikte taal</td><td>JavaScript</td></tr>
+            </tbody>
+            <thead>
+                <tr><th colspan="2">Activiteit</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Aantal posts</td><td>20</td></tr>
+                <tr><td>Meeste commits (1 dag)</td><td>12</td></tr>
+                <tr><td>Achievements</td><td>8</td></tr>
+            </tbody>
+        </table>
     </div>
+
+    <div class="vs">VS</div>
+
+    <!-- Gebruiker 2 -->
+    <div class="user-card">
+        <img src="/icons/user2-avatar.png" alt="User 2 Avatar" class="avatar">
+        <h3>User 2</h3>
+        <p>@user2</p>
+        <table>
+            <thead>
+                <tr><th colspan="2">Statistieken</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Commits deze week</td><td>20</td></tr>
+                <tr><td>Repositories</td><td>8</td></tr>
+                <tr><td>Volgers</td><td>200</td></tr>
+                <tr><td>Volgt</td><td>120</td></tr>
+                <tr><td>Hoogste streak</td><td>10 dagen</td></tr>
+                <tr><td>Meest gebruikte taal</td><td>Python</td></tr>
+            </tbody>
+            <thead>
+                <tr><th colspan="2">Activiteit</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Aantal posts</td><td>15</td></tr>
+                <tr><td>Meeste commits (1 dag)</td><td>9</td></tr>
+                <tr><td>Achievements</td><td>5</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 </body>
 </html>

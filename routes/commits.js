@@ -1,7 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const router = express.Router();
-const isAuthenticated = require('../routes/auth');
+const isAuthenticated = require('./auth');
 
 // GET route om commits op te halen
 router.get('/', isAuthenticated, async (req, res) => {

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../models/post');
 const User = require('../models/user');
-const isAuthenticated = require('../routes/auth');
+const isAuthenticated = require('./auth');
 const axios = require('axios');
 
 // GET route voor de feed

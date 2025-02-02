@@ -39,76 +39,6 @@
             postForm.style.display = postForm.style.display === 'none' ? 'block' : 'none';
         }
     </script>
-
-    <script>
-
-       
-        async function handleSearchInput(event) {
-            const query = event.target.value.trim();
-            const resultsContainer = document.getElementById('searchResults');
-
-            console.log(`Zoekquery verstuurd: ${query}`); // Debug output
-
-            if (!query) {
-                resultsContainer.style.display = 'none'; // Verberg dropdown als de zoekbalk leeg is
-                return;
-            }
-
-            try {
-                const response = await fetch(`/search?query=${encodeURIComponent(query)}`);
-                if (response.ok) {
-                    const users = await response.json();
-                    resultsContainer.innerHTML = '';
-                    users.forEach(user => {
-                        const item = document.createElement('div');
-                        item.classList.add('dropdown-item');
-                        item.innerHTML = `<img src="${user.avatarUrl}" class="avatar"> ${user.name || user.login}`;
-                        item.onclick = () => redirectToComparison(user.login);
-                        resultsContainer.appendChild(item);
-                    });
-                    resultsContainer.style.display = 'block';
-                } else {
-                    console.error('Error fetching search results:', response.statusText);
-                }
-            } catch (error) {
-                console.error('Network error:', error);
-            }
-        }
-
-        function redirectToComparison(username) {
-            if (username) {
-                window.location.href = `/comparison?selectedUser=${encodeURIComponent(username)}`;
-            } else {
-                console.error("Geen gebruikersnaam beschikbaar");
-            }
-        }
-        
-
-
-        function updateSearchResults(results) {
-            const resultsContainer = document.getElementById('searchResults');
-            resultsContainer.innerHTML = ''; // Verwijder vorige resultaten
-
-            if (!results || results.length === 0) {
-                resultsContainer.style.display = 'none'; // Verberg dropdown als er geen resultaten zijn
-                return;
-            }
-
-            results.forEach(user => {
-                const item = document.createElement('div');
-                item.classList.add('dropdown-item');
-                item.textContent = `${user.name || user.login}`;
-                item.onclick = () => {
-                    // Actie bij klikken op een resultaat
-                    alert(`Je hebt ${user.name || user.login} geselecteerd!`);
-                };
-                resultsContainer.appendChild(item);
-            });
-
-            resultsContainer.style.display = 'block'; // Toon de dropdown
-        }
-
-    </script>
 </head>
 <body>
     <!-- Sidebar -->
@@ -120,22 +50,17 @@
         <ul class="nav-links">
             <li><a href="/profile">Profile</a></li>
             <li><a href="/feed">Feed</a></li>
+            <li><a href="/comparison">side-by-side comparison</a></li>
             <li><a href="/logout">Log out</a></li>
         </ul>
     </div>
 
     <!-- Zoekbalk -->
     <div class="main-content">
-        <div class="search-bar">
-            <input 
-                type="text" 
-                id="searchInput" 
-                placeholder="Typ om een gebruiker te zoeken..."
-                autocomplete="off"
-                onInput="handleSearchInput(event);">
-            <div id="searchResults" class="dropdown"></div>
-        </div>
-
+        <form action="/feed/search" method="GET" class="search-bar">
+            <input type="text" name="q" placeholder="Zoek gebruikers..." required>
+            <button type="submit">Zoeken</button>
+        </form>
 
         <!-- Knop om formulier te tonen -->
         <button onclick="togglePostForm()" class="post-toggle-button">
